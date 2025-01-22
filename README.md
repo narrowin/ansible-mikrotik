@@ -50,5 +50,6 @@ Although contributions are not yet open, we encourage you to:
 We appreciate your interest in our project. By making these playbooks open source, we hope to foster a collaborative environment for improving and scaling MikroTik networks using Ansible. Stay tuned for updates!
 
 ---
+© 2025 narrowin.ch & sicore.ch.  
+Licensed under the Apache License, Version 2.0.
 
-*© 2025 narrowin.ch & sicore.ch. All rights reserved.*
