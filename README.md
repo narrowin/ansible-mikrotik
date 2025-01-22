@@ -9,7 +9,7 @@ Welcome to the **Ansible Playbooks for MikroTik RouterOS** project! This reposit
 
 ## About
 
-This effort is a collaboration between [narrowin.ch](https://narrowin.ch) and [sicore.ch](https://sicore.ch). Our goal is to make network management easier and more reliable by providing robust, automated infrastructure as code for MikroTik environments.
+This effort is a collaboration between [narrowin.ch](https://narrowin.ch) and [scicore.ch](https://scicore.ch). Our goal is to make network management easier and more reliable by providing robust, automated infrastructure as code for MikroTik environments.
 
 ### Key Features (Planned)
 
