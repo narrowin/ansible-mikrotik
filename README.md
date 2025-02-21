@@ -8,7 +8,7 @@ Welcome to the **Ansible Playbooks for MikroTik RouterOS** project! This reposit
 
 Join us#
 
-Have questions, ideas, bug reports or just want to chat? Come join our [discord server)[https://discord.gg/BngzYFxy].
+Have questions, ideas, bug reports or just want to chat? Come join our [discord server](https://discord.gg/BngzYFxy).
 
 ---
 
