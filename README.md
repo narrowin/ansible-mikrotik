@@ -5,6 +5,11 @@ Welcome to the **Ansible Playbooks for MikroTik RouterOS** project! This reposit
 > **Status: Coming Soon**  
 > This project is actively under development and not yet open-sourced. Stay tuned for our official release!
 
+
+Join us#
+
+Have questions, ideas, bug reports or just want to chat? Come join our [discord server)[https://discord.gg/BngzYFxy].
+
 ---
 
 ## About
