@@ -1,8 +1,8 @@
 ---
-name: nw-1mkt-simple
+name: simple
 
 mgmt:
-  network: nw-1mkt-simple-clab
+  network: simple-clab
   ipv4-subnet: 10.10.0.0/24
 
 topology:
