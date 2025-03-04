@@ -31,7 +31,7 @@ routeros_ip_service:
     certificate: "{{ mkt_common_settings.ip_service_ssl_api_cert }}"
     tls-version: any
   - name: api
-    disabled: "{{ mkt_common_settings.ip_service_non_ssl_api_disabled }}"
+    disabled: "{{ mkt_common_settings.ip_service_api_disabled }}"
     port: 8728
   - name: api-ssl
     disabled: "{{ mkt_common_settings.ip_service_ssl_api_disabled }}"
