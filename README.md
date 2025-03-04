@@ -1,64 +1,85 @@
+# ansible-mikrotik
 
-# Ansible Playbooks for MikroTik RouterOS Configuration and Operation
-
-Welcome to the **Ansible Playbooks for MikroTik RouterOS** project! This repository is a comprehensive collection of Ansible playbooks designed to help you seamlessly configure and operate MikroTik RouterOS switches, routers and firewalls.
-
-## Join us
-
-Have questions, ideas, bug reports or just want to chat? Come join our [discord server](https://discord.gg/BngzYFxy).
-
-## About
-
-This initial effort is a collaboration between [narrowin.ch](https://narrowin.ch) and [scicore.ch](https://scicore.ch). Our goal is to make network management easier and more reliable by providing robust, automated infrastructure as code for MikroTik environments.
+[![Discord][discord-svg]][discord-url] [![DevPod][devpod-svg]][devpod-url] [![Codespaces][codespaces-svg]][codespaces-url]  
+![w212][w212][Learn more](https://containerlab.dev/macos/#devpod)![w90][w90][Learn more](https://containerlab.dev/manual/codespaces)
 
 
-### Key Features
-
-- **Automated Configuration**  
-  Apply consistent and repeatable configurations across multiple MikroTik devices.
-  
-- **Secure Operations**  
-  Utilize best practices for secure access, system hardening, and user management.
-  
-- **Scalable Architecture**  
-  Support for a wide variety of network topologies and scenarios, from small setups to enterprise-level deployments.
-
-- **Community-Driven**  
-  We welcome community feedback, feature requests, and contributions once the repository is officially open.
+[discord-svg]: https://gitlab.com/rdodin/pics/-/wikis/uploads/b822984bc95d77ba92d50109c66c7afe/join-discord-btn.svg
+[discord-url]: https://discord.gg/BngzYFxy
+[devpod-svg]: https://gitlab.com/rdodin/pics/-/wikis/uploads/dfc36636ecaa60f3e70340686d5800db/open-in-devpod-btn.svg
+[devpod-url]: https://devpod.sh/open#https://github.com/narrowin/ansible-mikrotik
+[codespaces-svg]: https://gitlab.com/rdodin/pics/-/wikis/uploads/80546a8c7cda8bb14aa799d26f55bd83/run-codespaces-btn.svg
+[codespaces-url]: https://codespaces.new/srl-labs/srl-acl-lab?quickstart=1&devcontainer_path=.devcontainer%2Fdocker-in-docker%2Fdevcontainer.json
+[w212]: https://gitlab.com/rdodin/pics/-/wikis/uploads/718a32dfa2b375cb07bcac50ae32964a/w212h1.svg
+[w90]: https://gitlab.com/rdodin/pics/-/wikis/uploads/bf1b8ea28b4528eb1b66567355a13c5c/w90h1.svg
 
 
-## License
+**Automating Mikrotik Device Configuration with Ansible**
 
-Available under the [Apache License 2.0](LICENSE), a permissive license that allows commercial and private use, distribution, modification, and patent use.
+ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, this role simplifies network operations, minimizes manual errors, and streamlines deployment in dynamic network environments.
 
-# Quck start options
+---
 
-Spin up one of our exampels in [examples](examples) folder in no time. No local software dependencies - fully self-contained [containerlab](https://containerlab.dev) with ansible and this repo installed. All batteries included! 
+## Features
 
-# Installation 
+- **Automated Configuration:** Quickly deploy and update Mikrotik device settings including interfaces, routing, firewall rules, and VPN configurations.
+- **Idempotence:** Ensure configurations are applied consistently without unintended changes.
+- **Customizable Variables:** Easily override defaults to suit your configuration requirements.
+- **Modular Design:** Clean separation between tasks, defaults, and configuration files for easy maintenance and extension.
+- **Dynamic Inventory Support:** Integrate with your existing dynamic inventory setups. (coming soon)
 
-This sets up the needed softwaere and environment to run ansible on your machine. 
+---
 
-## Install ansible and required dependencies
+## Requirements
 
-```
-$> git clone ...
-$> python3 -m venv venv
-$> source venv/bin/activate
+- **Ansible:** Version 2.9 or later.
+- **Python:** Version 3.6 or higher.
+- **Mikrotik RouterOS:** Compatible with RouterOS versions as specified in the role documentation.
+- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for ssh (Port: 22) and api-access (Port: 8728).
+
+---
+
+## Quick start options
+
+Spin up a lab in the [containerlabs](containerlabs) folder. No local software dependencies - fully self-contained environment with a lab topology, ansible and this repo installed. All batteries included! 
+
+Either use the 
+
+## Installation
+
+
+```bash
+git clone https://github.com/narrowin/ansible-mikrotik.git
+python3 -m venv venv
+source venv/bin/activate
 (venv) $> pip install -r requirements.txt
 (venv) $> ansible-galaxy collection install -r requirements.yml -p collections/
 ```
 
-## Usage
 
-### Variables
+## Configuration
 
-Path to store the backup files in the ansible control host is defined with var `local_backups_top_folder` in [inventory/group_vars/all](inventory/group_vars/all). The default path to save the configs is folder "backups" in the top folder of the repository.
+[Key configuration options](group_vars/all.yml) include:
 
-Every [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
+- **mikrotik_user:** Username for authentication.
+- **mikrotik_password:** Password for authentication.
+- **local_backups_top_folder:** Path to local backup folder on the ansible control host
+- **Additional Settings:** Customize dns, ntp, snmp and otgher configurations according to your environment.
 
+All [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
 Check this file to identify the IPs for all switches and how to connect to them.
 
+
+*Connecting Requirements:*  
+
+```
+ [Ansible Playbook] --> [Mikrotik RouterOS API]
+ [Ansible Playbook] --> [Mikrotik RouterOS SSL-API]
+ [Ansible Playbook] --> [Mikrotik RouterOS SSH] # some playbooks directly connect via ssh/scp
+```
+---
+
+## Usage
 
 ### Backup config mikrotik switches
 ```
@@ -81,25 +102,36 @@ Be aware that ansible-pyblibssh won't work to transfer files from/to the mikroti
 You have to install the packages defined in `requirements.txt` inside your venv (paramiko + scp)
 
 
+
+---
+
+## Example runs
+
+### Ansible dry run and show diff
+
+```bash
+ansible-playbook playbooks/mikrotik-configure.yml --limit clab-nw-1mkt-simple-n1 --check --diff
+
+```
+
+---
+
+## Debugging
+
 ### Check the ansible groups for a device in the inventory
 
 ```
 $> ansible -i inventory/ -m debug -a var="hostvars[inventory_hostname]['group_names']" sw-mkt-cluster-05
 ```
 
-### Devices we need to add
+---
 
- * sw-mkt-dist-01
- * sw-mkt-dist-02
- * sw-mkt-dmz-01
- * sw-mkt-dmz-02
- * sw-mkt-dss-xcat-01
+## Caveats
 
 ### Details about bonding
 
 Make sure the members of a bond don't belong to the bridge. This requires the right order in the playbook. You should first execute the task
 configuring the bridge so the right interfaces are added/removed from/to the bridge and **afterwards** you can execute the task configuring the bond.
-
 
 ### Details about trunk ports
 
@@ -121,9 +153,6 @@ This happens because the interfaces were manually added to the bridge during the
 ...
 some output 
 ...
-;;; defconf
-55 IH qsfpplus2-4   bridge  yes     1  0x80             10                  10  none   
-;;; defconf
 56  H sfp-sfpplus1  bridge  yes     1  0x80             10                  10  none   
 ;;; defconf
 57  H sfp-sfpplus2  bridge  yes     1  0x80             10                  10  none   
@@ -136,6 +165,42 @@ some output
 [user@sw-mkt-03] /interface/bridge/port> remove numbers=56,57,58,59
 
 ```
+
+
+
+## Contributing
+
+Contributions to ansible-mikrotik are welcome! Please follow these guidelines:
+
+- **Code Standards:** Adhere to existing coding conventions and maintain clean, readable YAML and documentation.
+- **Issue Reporting:** Open an issue if you find bugs or have feature requests.
+- **Pull Requests:** Submit PRs with detailed descriptions of changes and reference any related issues.
+- **Documentation:** Update this README and any inline documentation as necessary.
+
+For additional guidelines, see our [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+---
+
+
+## License
+
+This project is licensed under the [Apachae License 2.0](LICENSE)
+
+---
+
+## About
+
+The initial effort and development is a collaboration between [narrowin.ch](https://narrowin.ch) and [scicore.ch](https://scicore.ch). Our goal is to make network management easier and more reliable by providing robust, automated infrastructure as code for MikroTik environments.
+
+---
+
+## Additional Resources
+
+- [Ansible Documentation](https://docs.ansible.com/)
+- [Ansible RouerOS collection](https://docs.ansible.com/ansible/latest/collections/community/routeros/index.html)
+- [Mikrotik RouterOS Documentation](https://help.mikrotik.com/docs/)
+- [Containerlab](https://containerlab.dev/)
+
 
 ### How to enable API with SSL in mikrotik devices
 
@@ -154,3 +219,7 @@ Once you have the certs you can upload them to the devices and enable the API ex
 
   * ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
   * The ansible vault password is stored in the password db with name "playbook-network-switches vault"
+
+---
+
+*Happy automating!*
