@@ -1,8 +1,8 @@
 ---
-name: nw-3mkt
+name: s3n
 
 mgmt:
-  network: nw-3mkt-clab
+  network: s3n-clab
   ipv4-subnet: 10.10.1.0/24
 
 topology:
