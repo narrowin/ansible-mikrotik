@@ -31,13 +31,13 @@ This initial effort is a collaboration between [narrowin.ch](https://narrowin.ch
 
 Available under the [Apache License 2.0](LICENSE), a permissive license that allows commercial and private use, distribution, modification, and patent use.
 
-# Quck start options
+# Quick start options
 
-Spin up one of our exampels in [examples](examples) folder in no time. No local software dependencies - fully self-contained [containerlab](https://containerlab.dev) with ansible and this repo installed. All batteries included! 
+Spin up one of our examples in [examples](examples) folder in no time. No local software dependencies - fully self-contained [containerlab](https://containerlab.dev) with ansible and this repo installed. All batteries included! 
 
 # Installation 
 
-This sets up the needed softwaere and environment to run ansible on your machine. 
+This sets up the needed software and environment to run ansible on your machine. 
 
 ## Install ansible and required dependencies
 
@@ -55,7 +55,7 @@ $> source venv/bin/activate
 
 Path to store the backup files in the ansible control host is defined with var `local_backups_top_folder` in [inventory/group_vars/all](inventory/group_vars/all). The default path to save the configs is folder "backups" in the top folder of the repository.
 
-Every [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
+Every [behavioural inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
 
 Check this file to identify the IPs for all switches and how to connect to them.
 
@@ -76,7 +76,7 @@ Mikrotik system files will be stored in the ansible control host in `playbook-ne
 
 ### mikrotik file transfers
 
-Be aware that ansible-pyblibssh won't work to transfer files from/to the mikrotik devices using ansible module `ansible.netcommon.net_get`. 
+Be aware that ansible-pylibssh won't work to transfer files from/to the mikrotik devices using ansible module `ansible.netcommon.net_get`. 
 
 You have to install the packages defined in `requirements.txt` inside your venv (paramiko + scp)
 
@@ -150,7 +150,7 @@ Once you have the certs you can upload them to the devices and enable the API ex
   * private ssh key used for authentication should be located in `~/.ssh/id_rsa_priv`
 
   Use ansible-vault to provide login- and API-credentials.
-  This addition helps in daily operations to keep the credentials i a securere standard place.
+  This addition helps in daily operations to keep the credentials i a secure standard place.
 
   * ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
   * The ansible vault password is stored in the password db with name "playbook-network-switches vault"
