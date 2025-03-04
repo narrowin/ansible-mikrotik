@@ -1,0 +1,20 @@
+{
+    "image": "ghcr.io/srl-labs/containerlab/devcontainer-dind-slim:latest",
+
+    // This is only relevant for Github CodeSpaces
+    "hostRequirements": {
+        "cpus": 2,
+        "memory": "8gb",
+        "storage": "32gb"
+    },
+    "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt && ansible-galaxy collection install -r requirements.yml -p collections/ && rm /home/vscode/.ssh/id*",
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            "settings": {},
+            "extensions": [
+                "srl-labs.vscode-containerlab"
+            ]
+        }
+    }
+}
