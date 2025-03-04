@@ -1,0 +1,7 @@
+---
+
+# Disable socks proxy
+routeros_ip_socks:
+  - enabled: false
+
+

@@ -1,0 +1,18 @@
+---
+
+- name: RouterOS test to query facts
+  hosts: mikrotik
+  gather_facts: false
+
+
+  tasks:
+
+    - name: Retrieve facts
+      community.routeros.facts:
+      register: _routeros_facts
+
+    - ansible.builtin.debug:
+        msg: "First IP address: {{ ansible_net_all_ipv4_addresses[0] }}"
+
+    # - ansible.builtin.debug:
+    #     var: _routeros_facts

@@ -1,0 +1,7 @@
+---
+
+# IPv6 disabled
+routeros_ipv6_settings:
+  - disable-ipv6: true
+  # - disable-ipv6: "{{ mkt_common_settings.ipv6_settings_disable-ipv6 }}"
+

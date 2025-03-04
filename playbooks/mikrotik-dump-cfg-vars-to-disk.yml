@@ -1,0 +1,260 @@
+---
+
+## You can use this playbook to dump existing config in a mikrotik device to disk to populate the ansible inventory
+
+- name: Query mikrotik config and write it to disk
+  hosts: mikrotik
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ mikrotik_api_username }}"
+      password: "{{ mikrotik_api_password }}"
+      #port: 8729
+      #tls: true
+      #validate_certs: false
+      #validate_cert_hostname: false
+
+  vars:
+
+    folder_to_store_files: "{{ local_mkt_config_dump_folder }}"
+
+    # list from https://docs.ansible.com/ansible/latest/collections/community/routeros/api_info_module.html#parameter-path
+    # We replace '_' with spaces before querying the api
+    api_endpoints:
+      - caps-man_aaa
+      - caps-man_access-list
+      - caps-man_channel
+      - caps-man_configuration
+      - caps-man_datapath
+      - caps-man_manager
+      - caps-man_manager_interface
+      - caps-man_provisioning
+      - caps-man_security
+      - certificate_settings
+      - interface_bonding
+      - interface_bridge
+      - interface_bridge_mlag
+      - interface_bridge_port
+      - interface_bridge_port-controller
+      - interface_bridge_port-extender
+      - interface_bridge_settings
+      - interface_bridge_vlan
+      - interface_detect-internet
+      - interface_eoip
+      - interface_ethernet
+      - interface_ethernet_poe
+      - interface_ethernet_switch
+      - interface_ethernet_switch_port
+      - interface_gre
+      - interface_gre6
+      - interface_l2tp-client
+      - interface_l2tp-server_server
+      - interface_list
+      - interface_list_member
+      - interface_ovpn-client
+      - interface_ovpn-server_server
+      - interface_ppp-client
+      - interface_pppoe-client
+      - interface_pppoe-server_server
+      - interface_pptp-server_server
+      - interface_sstp-server_server
+      - interface_vlan
+      - interface_vrrp
+      - interface_wifi
+      - interface_wifi_aaa
+      - interface_wifi_access-list
+      - interface_wifi_cap
+      - interface_wifi_capsman
+      - interface_wifi_channel
+      - interface_wifi_configuration
+      - interface_wifi_datapath
+      - interface_wifi_interworking
+      - interface_wifi_provisioning
+      - interface_wifi_security
+      - interface_wifi_steering
+      - interface_wifiwave2
+      - interface_wifiwave2_aaa
+      - interface_wifiwave2_access-list
+      - interface_wifiwave2_cap
+      - interface_wifiwave2_capsman
+      - interface_wifiwave2_channel
+      - interface_wifiwave2_configuration
+      - interface_wifiwave2_datapath
+      - interface_wifiwave2_interworking
+      - interface_wifiwave2_provisioning
+      - interface_wifiwave2_security
+      - interface_wifiwave2_steering
+      - interface_wireguard
+      - interface_wireguard_peers
+      - interface_wireless
+      - interface_wireless_align
+      - interface_wireless_cap
+      - interface_wireless_security-profiles
+      - interface_wireless_sniffer
+      - interface_wireless_snooper
+      - iot_modbus
+      - ip_accounting
+      - ip_accounting_web-access
+      - ip_address
+      - ip_arp
+      - ip_cloud
+      - ip_cloud_advanced
+      - ip_dhcp-client
+      - ip_dhcp-client_option
+      - ip_dhcp-relay
+      - ip_dhcp-server
+      - ip_dhcp-server_config
+      - ip_dhcp-server_lease
+      - ip_dhcp-server_matcher
+      - ip_dhcp-server_network
+      - ip_dhcp-server_option
+      - ip_dhcp-server_option_sets
+      - ip_dns
+      - ip_dns_adlist
+      - ip_dns_static
+      - ip_firewall_address-list
+      - ip_firewall_connection_tracking
+      - ip_firewall_filter
+      - ip_firewall_layer7-protocol
+      - ip_firewall_mangle
+      - ip_firewall_nat
+      - ip_firewall_raw
+      - ip_firewall_service-port
+      - ip_hotspot_service-port
+      - ip_ipsec_identity
+      - ip_ipsec_peer
+      - ip_ipsec_policy
+      - ip_ipsec_profile
+      - ip_ipsec_proposal
+      - ip_ipsec_settings
+      - ip_neighbor_discovery-settings
+      - ip_pool
+      - ip_proxy
+      - ip_route
+      - ip_route_rule
+      - ip_route_vrf
+      - ip_service
+      - ip_settings
+      - ip_smb
+      - ip_socks
+      - ip_ssh
+      - ip_tftp_settings
+      - ip_traffic-flow
+      - ip_traffic-flow_ipfix
+      - ip_traffic-flow_target
+      - ip_upnp
+      - ip_upnp_interfaces
+      - ip_vrf
+      - ipv6_address
+      - ipv6_dhcp-client
+      - ipv6_dhcp-server
+      - ipv6_dhcp-server_option
+      - ipv6_firewall_address-list
+      - ipv6_firewall_filter
+      - ipv6_firewall_mangle
+      - ipv6_firewall_nat
+      - ipv6_firewall_raw
+      - ipv6_nd
+      - ipv6_nd_prefix
+      - ipv6_nd_prefix_default
+      - ipv6_route
+      - ipv6_settings
+      - mpls
+      - mpls_interface
+      - mpls_ldp
+      - mpls_ldp_accept-filter
+      - mpls_ldp_advertise-filter
+      - mpls_ldp_interface
+      - port_firmware
+      - port_remote-access
+      - ppp_aaa
+      - ppp_profile
+      - ppp_secret
+      - queue_interface
+      - queue_simple
+      - queue_tree
+      - queue_type
+      - radius
+      - radius_incoming
+      - routing_bgp_aggregate
+      - routing_bgp_connection
+      - routing_bgp_instance
+      - routing_bgp_network
+      - routing_bgp_peer
+      - routing_bgp_template
+      - routing_filter
+      - routing_filter_num-list
+      - routing_filter_rule
+      - routing_filter_select-rule
+      - routing_id
+      - routing_igmp-proxy
+      - routing_igmp-proxy_interface
+      - routing_mme
+      - routing_ospf_area
+      - routing_ospf_area_range
+      - routing_ospf_instance
+      - routing_ospf_interface-template
+      - routing_ospf_static-neighbor
+      - routing_pimsm_instance
+      - routing_pimsm_interface-template
+      - routing_rip
+      - routing_ripng
+      - routing_rule
+      - routing_table
+      - snmp
+      - snmp_community
+      - system_clock
+      - system_clock_manual
+      - system_health_settings
+      - system_identity
+      - system_leds_settings
+      - system_logging
+      - system_logging_action
+      - system_note
+      - system_ntp_client
+      - system_ntp_client_servers
+      - system_ntp_server
+      - system_package_update
+      - system_resource_irq_rps
+      - system_routerboard_settings
+      - system_scheduler
+      - system_script
+      - system_upgrade_mirror
+      - system_ups
+      - system_watchdog
+      - tool_bandwidth-server
+      - tool_e-mail
+      - tool_graphing
+      - tool_graphing_interface
+      - tool_graphing_resource
+      - tool_mac-server
+      - tool_mac-server_mac-winbox
+      - tool_mac-server_ping
+      - tool_netwatch
+      - tool_romon
+      - tool_sms
+      - tool_sniffer
+      - tool_traffic-generator
+      - user
+      - user_aaa
+      - user_group
+      - user_settings
+
+  tasks:
+
+    # - debug:
+    #     var: item | regex_replace('_', ' ')
+    #   loop: "{{ api_endpoints }}"
+
+    - name: Create config dump folder in the ansible control host
+      ansible.builtin.file:
+        path: "{{ folder_to_store_files }}"
+        state: directory
+        mode: 0700
+      delegate_to: localhost
+      become: False
+
+    - name: Query mikrotik api
+      ansible.builtin.include_tasks: ./include/mikrotik-query-api.yml
+      loop: "{{ api_endpoints }}"

@@ -1,0 +1,130 @@
+---
+
+# Common config options which apply to every bond
+routeros_interface_bond_common:
+  arp: enabled
+  arp-interval: 100ms
+  arp-ip-targets: ''
+  arp-timeout: auto
+  #comment: ''
+  disabled: false
+  down-delay: 0ms
+  #forced-mac-address: null
+  lacp-rate: 30secs
+  #lacp-user-key: null
+  link-monitoring: mii
+  mii-interval: 100ms
+  min-links: 0
+  #mlag-id: 1024
+  mode: 802.3ad
+  mtu: 1500
+  primary: none
+  transmit-hash-policy: layer-2-and-3
+  up-delay: 0ms
+
+# Custom options which are specific to each bond
+# You can override here any of the common vars defined in {{ routeros_interface_bond_common }}
+routeros_interface_bond_custom:
+
+  peerlink:
+    name: 'peerlink'
+    slaves: sfp-sfpplus23,sfp-sfpplus24
+
+  mlag-bond-1:
+      name: mlag-bond-1
+      mlag-id: 101
+      slaves: sfp-sfpplus1
+  mlag-bond-2:
+      name: 'mlag-bond-2'
+      mlag-id: 102
+      slaves: sfp-sfpplus2
+  mlag-bond-3:
+      name: 'mlag-bond-3'
+      mlag-id: 103
+      slaves: sfp-sfpplus3
+  mlag-bond-4:
+      name: 'mlag-bond-4'
+      mlag-id: 104
+      slaves: sfp-sfpplus4
+  mlag-bond-5:
+      name: 'mlag-bond-5'
+      mlag-id: 105
+      slaves: sfp-sfpplus5
+  mlag-bond-6:
+      name: 'mlag-bond-6'
+      mlag-id: 106
+      slaves: sfp-sfpplus6
+  mlag-bond-7:
+      name: 'mlag-bond-7'
+      mlag-id: 107
+      slaves: sfp-sfpplus7
+  mlag-bond-8:
+      name: 'mlag-bond-8'
+      mlag-id: 108
+      slaves: sfp-sfpplus8
+  mlag-bond-9:
+      name: 'mlag-bond-9'
+      mlag-id: 109
+      slaves: sfp-sfpplus9
+  mlag-bond-10:
+      name: 'mlag-bond-10'
+      mlag-id: 1010
+      slaves: sfp-sfpplus10
+  mlag-bond-11:
+      name: 'mlag-bond-11'
+      mlag-id: 1011
+      slaves: sfp-sfpplus11
+  mlag-bond-12:
+      name: 'mlag-bond-12'
+      mlag-id: 1012
+      slaves: sfp-sfpplus12
+  mlag-bond-13:
+      name: 'mlag-bond-13'
+      mlag-id: 1013
+      slaves: sfp-sfpplus13
+  mlag-bond-14:
+      name: 'mlag-bond-14'
+      mlag-id: 1014
+      slaves: sfp-sfpplus14
+  mlag-bond-15:
+      name: 'mlag-bond-15'
+      mlag-id: 1015
+      slaves: sfp-sfpplus15
+  mlag-bond-16:
+      name: 'mlag-bond-16'
+      mlag-id: 1016
+      slaves: sfp-sfpplus16
+  mlag-bond-17:
+      name: 'mlag-bond-17'
+      mlag-id: 1017
+      slaves: sfp-sfpplus17
+  mlag-bond-18:
+      name: 'mlag-bond-18'
+      mlag-id: 1018
+      slaves: sfp-sfpplus18
+  mlag-bond-19:
+      name: 'mlag-bond-19'
+      mlag-id: 1019
+      slaves: sfp-sfpplus19
+  mlag-bond-20:
+      name: 'mlag-bond-20'
+      mlag-id: 1020
+      slaves: sfp-sfpplus20
+  mlag-bond-21:
+      name: 'mlag-bond-21'
+      mlag-id: 1021
+      slaves: sfp-sfpplus21
+  mlag-bond-22:
+      name: 'mlag-bond-22'
+      mlag-id: 1022
+      slaves: sfp-sfpplus22
+
+
+routeros_interface_bond: >-
+  {%- set routeros_interface_bond = [] -%}
+  {%- for bond_name,bond_custom_config in routeros_interface_bond_custom.items() -%}
+    {%- set combined_config = {} -%}
+    {%- set _ = combined_config.update(routeros_interface_bond_common|combine(bond_custom_config)) -%}
+    {%- set _ = routeros_interface_bond.append(combined_config) -%}
+  {%- endfor -%}
+  {{ routeros_interface_bond }}

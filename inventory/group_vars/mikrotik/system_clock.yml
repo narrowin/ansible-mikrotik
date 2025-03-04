@@ -1,0 +1,6 @@
+---
+
+# clock settings
+routeros_system_clock:
+  - time-zone-name: "{{ mkt_common_settings.system_clock_time_zone_name }}"
+    time-zone-autodetect: "{{ mkt_common_settings.system_clock_time_zone_autodetect }}"

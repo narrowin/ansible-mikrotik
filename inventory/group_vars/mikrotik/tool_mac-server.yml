@@ -1,0 +1,8 @@
+---
+
+# Don't allow access to the MAC Telnet server
+# https://help.mikrotik.com/docs/display/ROS/MAC+server
+routeros_tool_mac_server:
+  - allowed-interface-list: none
+
+

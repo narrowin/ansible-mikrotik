@@ -1,0 +1,7 @@
+---
+
+# Firewall address list describing the local mgmt network
+routeros_ip_firewall_address_list:
+  - address: "{{ mkt_common_settings.ip_firewall_address_list }}"
+    disabled: false
+    list: allowed_to_device

@@ -1,0 +1,43 @@
+---
+
+# Configure ip services on device
+# XXX we have to make sure we add the certificate in advance
+# for this to work we need to make sure to upload and install a Cert in the install process
+# Uploading SSL Certificate in Files Directory (server.crt, server.key)
+# Importing SSL Certificate in RouterOS Certificate Store
+#   scp server.crt/key to device
+#   /certificate import file-name=server.crt
+#   /certificate import file-name=server.key
+#
+#   Start using it
+#   /ip/service/set certificate=server.crt api-ssl
+routeros_ip_service:
+  - name: telnet
+    disabled: true
+    port: 23
+  - name: ftp
+    disabled: true
+    port: 21
+  - name: www
+    disabled: true
+    port: 80
+  - name: ssh
+    disabled: false
+    port: 22
+    # XXX this is needed for the rest-api but so far we dont use it anymore
+  - name: www-ssl
+    disabled: "{{ mkt_common_settings.ip_service_rest_api_disabled }}"
+    port: 443
+    certificate: "{{ mkt_common_settings.ip_service_ssl_api_cert }}"
+    tls-version: any
+  - name: api
+    disabled: "{{ mkt_common_settings.ip_service_non_ssl_api_disabled }}"
+    port: 8728
+  - name: api-ssl
+    disabled: "{{ mkt_common_settings.ip_service_ssl_api_disabled }}"
+    certificate: "{{ mkt_common_settings.ip_service_ssl_api_cert }}"
+    port: 8729
+    tls-version: any
+  - name: winbox
+    disabled: false
+    port: 8291

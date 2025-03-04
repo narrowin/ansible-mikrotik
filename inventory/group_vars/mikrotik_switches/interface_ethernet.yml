@@ -1,0 +1,24 @@
+---
+
+# Here we merge {{ routeros_interface_ethernet_common }} and {{ routeros_interface_ethernet_custom }}
+# to create the complete data structure we send to the API
+# ############################################################
+##    DON'T MODIFY BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
+# ###########################################################
+routeros_interface_ethernet: >-
+  {%- set routeros_interface_ethernet = [] -%}
+  {%- for port_name,port_custom_config in routeros_interface_ethernet_custom.items() -%}
+    {%- set combined_config = {} -%}
+    {%- set _ = combined_config.update(routeros_interface_ethernet_common|combine(port_custom_config)) -%}
+    {%- set _ = routeros_interface_ethernet.append(combined_config) -%}
+  {%- endfor -%}
+  {{ routeros_interface_ethernet }}
+
+
+
+# You could hardcode var routeros_interface_ethernet like this adding a line for each port
+# This is left here as reference to have an example on how we were doing it before
+# routeros_interface_ethernet:
+#   - "{{ routeros_interface_ethernet_common | combine(routeros_interface_ethernet_custom.ether1) }}"
+#   - "{{ routeros_interface_ethernet_common | combine(routeros_interface_ethernet_custom.ether2) }}"
+#   - "{{ routeros_interface_ethernet_common | combine(routeros_interface_ethernet_custom.ether3) }}"

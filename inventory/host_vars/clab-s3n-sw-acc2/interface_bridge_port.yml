@@ -1,0 +1,68 @@
+---
+
+# vars {{ routeros_interface_bridge_port_common }} and {{ routeros_interface_bridge_port_custom }} are merged
+# to {{ routeros_interface_bridge_port }} in inventory/group_vars/mikrotik/interface_bridge_port.yml
+
+# Common config options which apply to every port
+routeros_interface_bridge_port_common:
+  bridge: bridge0
+  bpdu-guard: no
+  edge: auto
+  hw: yes
+  frame-types: admit-only-untagged-and-priority-tagged
+  learn: yes
+  multicast-router: disabled
+  point-to-point: no
+  pvid: 1
+
+# Custom options which are specific to each port
+# You can override here any of the common vars defined in {{ routeros_interface_bridge_port_common }}
+routeros_interface_bridge_port_custom:
+  ether2:
+    interface: ether2
+    pvid: 10
+  ether3:
+    interface: ether3
+  ether4:
+    interface: ether4
+  ether5:
+    interface: ether5
+  ether6:
+    interface: ether6
+  ether7:
+    interface: ether7
+  ether8:
+    interface: ether8
+  ether9:
+    interface: ether9
+  ether10:
+    interface: ether10
+  ether11:
+    interface: ether11
+  ether12:
+    interface: ether12
+  ether13:
+    interface: ether13
+  ether14:
+    interface: ether14
+  ether15:
+    interface: ether15
+  ether16:
+    interface: ether16
+  ether17:
+    interface: ether17
+  ether18:
+    interface: ether18
+  ether19:
+    interface: ether19
+  ether20:
+    interface: ether20
+  ether21:
+    interface: ether21
+  ether22:
+    interface: ether22
+  ether23:
+    interface: ether23
+  ether24:
+    interface: ether24
+    frame-types: admit-only-vlan-tagged

@@ -1,0 +1,5 @@
+---
+
+# Allow access with Winbox only via MAC-Address from the mgmt network
+routeros_tool_mac_server_mac_winbox:
+  - allowed-interface-list: mgmt

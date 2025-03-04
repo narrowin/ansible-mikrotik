@@ -1,0 +1,51 @@
+---
+
+- name: RouterOS config backup
+  hosts: mikrotik
+  gather_facts: false
+
+
+  tasks:
+
+    - name: Create backups folder in the ansible control host
+      ansible.builtin.file:
+        path: "{{ local_backups_top_folder }}/{{ inventory_hostname }}"
+        state: directory
+        mode: '0700'
+      delegate_to: localhost
+      become: false
+
+
+    - name: Write the config to switch's memory and copy it to ansible control host
+      block:
+
+        - name: "Starting ROS Configuration Backup to memory"
+          community.routeros.command:
+            commands: "/export show-sensitive terse file={{ inventory_hostname }}.cfg.backup"
+
+        - name: "Copy ROS config backup to ansible control host"
+          ansible.netcommon.net_get:
+            src: "{{ inventory_hostname }}.cfg.backup.rsc"
+            dest: "{{ local_backups_top_folder }}/{{ inventory_hostname }}/{{ inventory_hostname }}.cfg.backup.rsc"
+
+        - name: "Delete backup file from memory"
+          community.routeros.command:
+            commands: "/file/remove {{ inventory_hostname }}.cfg.backup"
+
+
+    # - name: Register config to an ansible var and write it to disk
+    #   block:
+
+    #     - name: Query mikrotik config and store it in a variable
+    #       community.routeros.command:
+    #         commands: /export show-sensitive terse
+    #         #commands: /export terse
+    #       register: _routeros_config
+
+
+    #     - name: Write config from variable to disk
+    #       ansible.builtin.copy:
+    #         content: "{{ _routeros_config.stdout[0] }}"
+    #         dest: "{{ local_backups_top_folder }}/{{ inventory_hostname }}/{{ inventory_hostname }}.cfg.backup.rsc"
+    #       delegate_to: localhost
+    #       become: False

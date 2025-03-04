@@ -1,0 +1,11 @@
+---
+
+routeros_interface_bridge_vlan:
+  - bridge: bridge
+    vlan-ids: 1
+    comment: 'MGMT network'
+    tagged: qsfpplus1-1,qsfpplus2-1,uplink-bond
+  - bridge: bridge
+    vlan-ids: 10
+    comment: 'Cluster network'
+    tagged: qsfpplus1-1,qsfpplus2-1,uplink-bond

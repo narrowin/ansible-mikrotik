@@ -1,0 +1,7 @@
+---
+
+# ntp client settings
+routeros_system_ntp_client:
+  - enabled: true
+    mode: unicast
+    servers: "{{ mkt_common_settings.system_ntp_client_servers }}"

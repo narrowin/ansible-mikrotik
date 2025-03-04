@@ -1,0 +1,285 @@
+---
+
+- name: Configure RouterOS switches
+  hosts: mikrotik
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ mikrotik_api_username }}"
+      password: "{{ mikrotik_api_password }}"
+      # port: 8729
+      # tls: true
+      # validate_certs: false
+      # validate_cert_hostname: false
+      # enable options below to make sure the switch config is in sync with ansible config
+      # be careful because what's not defined in ansible will be deleted from switch
+      ensure_order: false
+      handle_absent_entries: "remove"
+      handle_entries_content: "remove_as_much_as_possible"
+
+  tasks:
+
+    # - name: Create backup and cronjob to restore it in case we lose access
+    #   block:
+
+    #       - name: Create a backup of current config to device flash storage
+    #         community.routeros.command:
+    #           commands: /system backup save name "flash/mikrotik_rollback_backup.img"
+
+    #       # - name: Add a cronjob to restore the backup in 5min in case we lose access
+    #       #   community.routeros.command:
+    #       #     commands:
+
+    #   when: local_routeros_rollback
+    #   tags: rollback
+
+    - name: Hostname
+      tags: hostname
+      community.routeros.api_modify:
+        path: system identity
+        data: "{{ routeros_system_identity }}"
+      when:
+        - routeros_system_identity is defined
+
+    - name: DNS settings
+      community.routeros.api_modify:
+        path: ip dns
+        data: "{{ routeros_ip_dns }}"
+      tags: dns
+
+    - name: System time
+      tags: time
+      block:
+        - name: System clock
+          community.routeros.api_modify:
+            path: system clock
+            data: "{{ routeros_system_clock }}"
+          when:
+            - routeros_system_clock is defined
+            - routeros_system_clock | length > 0
+
+        - name: NTP server
+          community.routeros.api_modify:
+            path: system ntp client
+            data: "{{ routeros_system_ntp_client }}"
+          when:
+            - routeros_system_ntp_client is defined
+            - routeros_system_ntp_client | length > 0
+
+    - name: Configure syslog
+      tags: syslog
+      block:
+        - name: Remote syslog server
+          community.routeros.api_modify:
+            path: system logging action
+            data: "{{ routeros_system_logging_action }}"
+          when:
+            - routeros_system_logging_action is defined
+            - routeros_system_logging_action | length > 0
+
+        - name: Define which severity to send to remote syslog
+          community.routeros.api_modify:
+            path: system logging
+            data: "{{ routeros_system_logging }}"
+          when:
+            - routeros_system_logging is defined
+            - routeros_system_logging | length > 0
+
+    - name: Ethernet ports
+      tags: ethernet_ports
+      community.routeros.api_modify:
+        path: interface ethernet
+        data: "{{ routeros_interface_ethernet }}"
+        handle_absent_entries: "ignore"
+        handle_entries_content: "remove_as_much_as_possible"
+      when:
+        - routeros_interface_ethernet is defined
+        - routeros_interface_ethernet | length > 0
+
+      # XXX manually remove the interface from the bridge before
+      # [user@sw-mkt-lab-01] /interface/bridge/port> /interface/bridge/port/remove numbers=[ /interface/bridge/port/find  where interface=sfp-sfpplus3 ]
+      # [user@sw-mkt-lab-01] /interface/bridge/port> /interface/bridge/port/remove numbers=[ /interface/bridge/port/find  where interface=sfp-sfpplus4 ]
+      # XXX error if the slave ints are already in a bridge
+      # [user@sw-mkt-lab-01] /interface/bonding> add name=uplink-bond slaves=sfp-sfpplus3,sfp-sfpplus4 mode=802.3ad
+      # failure: sfp-sfpplus4 already in bridge
+      # XXX if their is a bond configured we can't remove it with this
+    - name: Bond
+      tags: bond
+      community.routeros.api_modify:
+        path: interface bonding
+        data: "{{ routeros_interface_bond }}"
+      when:
+        - routeros_interface_bond is defined
+
+    - name: Bridge
+      tags: bridge
+      community.routeros.api_modify:
+        path: interface bridge
+        data: "{{ routeros_interface_bridge }}"
+      when:
+        - routeros_interface_bridge is defined
+        - routeros_interface_bridge | length > 0
+
+    - name: Mlag
+      tags: bridge_mlag
+      community.routeros.api_modify:
+        path: interface bridge mlag
+        data: "{{ routeros_interface_bridge_mlag }}"
+      when:
+        - routeros_interface_bridge_mlag is defined
+        - routeros_interface_bridge_mlag | length > 0
+
+    - name: VLANs
+      tags: vlans
+      community.routeros.api_modify:
+        path: interface bridge vlan
+        data: "{{ routeros_interface_bridge_vlan }}"
+      when: routeros_interface_bridge_vlan is defined
+
+    - name: Bridge ports
+      tags: bridge_ports
+      community.routeros.api_modify:
+        path: interface bridge port
+        data: "{{ routeros_interface_bridge_port }}"
+      when:
+        - routeros_interface_bridge_port is defined
+        - routeros_interface_bridge_port | length > 0
+
+    # XXX this needs improvement especially checking if vars exist
+    - name: IP services
+      tags: ip_service
+      community.routeros.api_modify:
+        path: ip service
+        data: "{{ routeros_ip_service }}"
+        handle_absent_entries: "ignore"
+
+    - name: Interface lists
+      tags: interface-lists
+      block:
+        - name: Interface list
+          community.routeros.api_modify:
+            path: interface list
+            data: "{{ routeros_interface_list }}"
+
+        - name: Interface list member
+          community.routeros.api_modify:
+            path: interface list member
+            data: "{{ routeros_interface_list_member }}"
+          when:
+            - routeros_interface_list_member is defined
+            - routeros_interface_list_member | length > 0
+
+    - name: Mac-Server
+      tags: mac_server
+      block:
+        - name: Mac-server
+          community.routeros.api_modify:
+            path: tool mac-server
+            data: "{{ routeros_tool_mac_server }}"
+
+        - name: Mac-server winbox
+          community.routeros.api_modify:
+            path: tool mac-server mac-winbox
+            data: "{{ routeros_tool_mac_server_mac_winbox }}"
+
+        - name: Mac-server mac ping
+          community.routeros.api_modify:
+            path: tool mac-server ping
+            data: "{{ routeros_tool_mac_server_ping }}"
+
+
+    - name: Neighbor discovery
+      tags: neighbor_discovery
+      community.routeros.api_modify:
+        path: ip neighbor discovery-settings
+        data: "{{ routeros_ip_neighbor_discovery_settings }}"
+
+
+    # XXX if host-key-size is changed we need to run /ip ssh regenerate-host-key
+    - name: SSH-Server settings
+      tags: ssh
+      community.routeros.api_modify:
+        path: ip ssh
+        data: "{{ routeros_ip_ssh }}"
+
+    # from:     https://help.mikrotik.com/docs/display/ROS/First+Time+Configuration
+    # Following services are disabled by default, nevertheless, it is better to make sure that none of then were enabled accidentally
+    - name: Proxy settings
+      tags: proxy
+      block:
+        - name: Proxy settings
+          community.routeros.api_modify:
+            path: ip proxy
+            data: "{{ routeros_ip_proxy }}"
+
+        - name: Socks settings
+          community.routeros.api_modify:
+            path: ip socks
+            data: "{{ routeros_ip_socks }}"
+
+    - name: UPnp settings
+      tags: upnp
+      community.routeros.api_modify:
+        path: ip upnp
+        data: "{{ routeros_ip_upnp }}"
+
+    - name: Cloud settings
+      tags: cloud
+      community.routeros.api_modify:
+        path: ip cloud
+        data: "{{ routeros_ip_cloud }}"
+
+    - name: SNMP settings
+      tags: snmp
+      block:
+        - name: Enable the SNMP server
+          community.routeros.api_modify:
+            path: snmp
+            data: "{{ routeros_snmp }}"
+          when:
+            - routeros_snmp is defined
+            - routeros_snmp | length > 0
+
+        - name: Configure the SNMP community
+          community.routeros.api_modify:
+            path: snmp community
+            data: "{{ routeros_snmp_community }}"
+          when:
+            - routeros_snmp_community is defined
+            - routeros_snmp_community | length > 0
+
+    - name: IPv6 settings
+      tags: ipv6
+      community.routeros.api_modify:
+        path: ipv6 settings
+        data: "{{ routeros_ipv6_settings }}"
+
+
+    - name: Firewall settings
+      tags: firewall
+      block:
+        - name: Firewall address list
+          community.routeros.api_modify:
+            path: ip firewall address-list
+            data: "{{ routeros_ip_firewall_address_list }}"
+
+        - name: Firewall filter rules
+          community.routeros.api_modify:
+            path: ip firewall filter
+            data: "{{ routeros_ip_firewall_filter }}"
+            ensure_order: true
+
+    # - name: Delete the rollback backup file and cronjob
+    #   block:
+
+    #     # - name: Remove cronjob
+    #     #   community.routeros.command:
+    #     #     commands:
+
+    #     - name: Create a backup of current config to device flash storage
+    #       community.routeros.command:
+    #         commands: /file/remove "flash/mikrotik_rollback_backup.img"
+
+    #   when: local_routeros_rollback
+    #   tags: rollback

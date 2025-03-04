@@ -1,0 +1,92 @@
+---
+
+# vars {{ routeros_interface_ethernet_common }} and {{ routeros_interface_ethernet_custom }} are merged
+# to {{ routeros_interface_ethernet }} in inventory/group_vars/mikrotik_switches/interface_ethernet.yml
+
+# Common config options which apply to every ethernet
+routeros_interface_ethernet_common:
+  # advertise: 10M-half,10M-full,100M-half,100M-full,1000M-half,1000M-full
+  arp: enabled
+  arp-timeout: auto
+  auto-negotiation: true
+  # bandwidth: unlimited/unlimited
+  # combo-mode: null
+  # comment: null
+  disabled: false
+  # fec-mode: null
+  full-duplex: true
+  #l2mtu: 1592
+  #l2mtu: "{{ routeros_max_l2mtu | default(1584) | int }}"  # this doesn't work. returns string and breaks idempotence
+  loop-protect: default
+  loop-protect-disable-time: 5m
+  loop-protect-send-interval: 5s
+  # mac-address: 18:FD:74:06:34:48
+  # mdix-enable: null
+  mtu: 1500
+  # orig-mac-address: 18:FD:74:06:34:48
+  # poe-out: null
+  # poe-priority: null
+  # poe-voltage: null
+  # power-cycle-interval: null
+  # power-cycle-ping-address: null
+  # power-cycle-ping-enabled: null
+  # power-cycle-ping-timeout: null
+  rx-flow-control: 'off'
+  # sfp-rate-select: null
+  # sfp-shutdown-temperature: null
+  # speed: 1Gbps
+  tx-flow-control: 'off'
+
+# Custom options which are specific to each ethernet
+# You can override here any of the common vars defined in {{ routeros_interface_ethernet_common }}
+routeros_interface_ethernet_custom:
+  ether1:
+    default-name: 'ether1'
+    comment: 'mgmt-port not in bridge'
+    #l2mtu: 1598
+  ether2:
+    default-name: 'ether2'
+  ether3:
+    default-name: 'ether3'
+  ether4:
+    default-name: 'ether4'
+  ether5:
+    default-name: 'ether5'
+  ether6:
+    default-name: 'ether6'
+  ether7:
+    default-name: 'ether7'
+  ether8:
+    default-name: 'ether8'
+  ether9:
+    default-name: 'ether9'
+  ether10:
+    default-name: 'ether10'
+  ether11:
+    default-name: 'ether11'
+  ether12:
+    default-name: 'ether12'
+  ether13:
+    default-name: 'ether13'
+  ether14:
+    default-name: 'ether14'
+  ether15:
+    default-name: 'ether15'
+  ether16:
+    default-name: 'ether16'
+  ether17:
+    default-name: 'ether17'
+  ether18:
+    default-name: 'ether18'
+  ether19:
+    default-name: 'ether19'
+  ether20:
+    default-name: 'ether20'
+  ether21:
+    default-name: 'ether21'
+  ether22:
+    default-name: 'ether22'
+  ether23:
+    default-name: 'ether23'
+  ether24:
+    default-name: 'ether24'

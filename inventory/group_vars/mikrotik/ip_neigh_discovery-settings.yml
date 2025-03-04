@@ -1,0 +1,10 @@
+---
+
+# Neighbor discovery restricted to lldp
+routeros_ip_neighbor_discovery_settings:
+  - discover-interface-list: '!dynamic'
+    lldp-med-net-policy-vlan: disabled
+    protocol: lldp
+
+
+

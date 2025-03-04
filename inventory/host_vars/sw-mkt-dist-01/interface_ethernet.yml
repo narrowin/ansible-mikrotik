@@ -1,0 +1,127 @@
+---
+
+# vars {{ routeros_interface_ethernet_common }} and {{ routeros_interface_ethernet_custom }} are merged
+# to {{ routeros_interface_ethernet }} in inventory/group_vars/mikrotik_switches/interface_ethernet.yml
+
+# Common config options which apply to every ethernet
+routeros_interface_ethernet_common:
+  # advertise: 10M-half,10M-full,100M-half,100M-full,1000M-half,1000M-full
+  arp: enabled
+  arp-timeout: auto
+  auto-negotiation: true
+  # bandwidth: unlimited/unlimited
+  # combo-mode: null
+  # comment: null
+  disabled: false
+  # fec-mode: null
+  full-duplex: true
+  l2mtu: 10218
+  # l2mtu: 1584
+  # l2mtu: "{{ routeros_max_l2mtu | default(1584) | int }}"  # this doesn't work. returns string and breaks idempotence
+  loop-protect: default
+  loop-protect-disable-time: 5m
+  loop-protect-send-interval: 5s
+  # mac-address: 18:FD:74:06:34:48
+  # mdix-enable: null
+  mtu: 1500
+  # orig-mac-address: 18:FD:74:06:34:48
+  # poe-out: null
+  # poe-priority: null
+  # poe-voltage: null
+  # power-cycle-interval: null
+  # power-cycle-ping-address: null
+  # power-cycle-ping-enabled: null
+  # power-cycle-ping-timeout: null
+  rx-flow-control: 'off'
+  # sfp-rate-select: null
+  # sfp-shutdown-temperature: null
+  # speed: 1Gbps
+  tx-flow-control: 'off'
+
+# Custom options which are specific to each ethernet
+# You can override here any of the common vars defined in {{ routeros_interface_ethernet_common }}
+routeros_interface_ethernet_custom:
+  ether1:
+    default-name: 'ether1'
+    comment: 'mgmt-port not in bridge'
+    l2mtu: 2028
+  sfp_sfpplus1:
+    default-name: 'sfp-sfpplus1'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus2:
+    default-name: 'sfp-sfpplus2'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus3:
+    default-name: 'sfp-sfpplus3'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus4:
+    default-name: 'sfp-sfpplus4'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus5:
+    default-name: 'sfp-sfpplus5'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus6:
+    default-name: 'sfp-sfpplus6'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus7:
+    default-name: 'sfp-sfpplus7'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus8:
+    default-name: 'sfp-sfpplus8'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus9:
+    default-name: 'sfp-sfpplus9'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus10:
+    default-name: 'sfp-sfpplus10'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus11:
+    default-name: 'sfp-sfpplus11'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus12:
+    default-name: 'sfp-sfpplus12'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus13:
+    default-name: 'sfp-sfpplus13'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus14:
+    default-name: 'sfp-sfpplus14'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus15:
+    default-name: 'sfp-sfpplus15'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus16:
+    default-name: 'sfp-sfpplus16'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus17:
+    default-name: 'sfp-sfpplus17'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus18:
+    default-name: 'sfp-sfpplus18'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus19:
+    default-name: 'sfp-sfpplus19'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus20:
+    default-name: 'sfp-sfpplus20'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus21:
+    default-name: 'sfp-sfpplus21'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus22:
+    default-name: 'sfp-sfpplus22'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus23:
+    default-name: 'sfp-sfpplus23'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus24:
+    default-name: 'sfp-sfpplus24'
+    sfp-shutdown-temperature: 95
+  qsfpplus1_1:
+    default-name: 'qsfpplus1-1'
+    sfp-shutdown-temperature: 95
+    fec-mode: 'auto'
+  qsfpplus2_1:
+    default-name: 'qsfpplus2-1'
+    sfp-shutdown-temperature: 95
+    fec-mode: 'auto'

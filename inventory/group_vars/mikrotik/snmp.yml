@@ -1,0 +1,27 @@
+---
+
+routeros_snmp:
+  - enabled: true
+    trap-community: public
+    # contact: 'admin@acme'
+    # engine-id-suffix: ''
+    # location: ''
+    # src-address: '::'
+    # trap-generators: temp-exception
+    # trap-interfaces: null
+    # trap-target: ''
+    # trap-version: 1
+
+
+routeros_snmp_community:
+  - name: public
+    addresses: "{{ mkt_common_settings.snmp_community_addresses }}"
+    # authentication-password: ''
+    # authentication-protocol: MD5
+    # comment: null
+    # disabled: false
+    # encryption-password: ''
+    # encryption-protocol: DES
+    # read-access: true
+    # security: none
+    # write-access: false

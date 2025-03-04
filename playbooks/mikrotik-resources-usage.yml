@@ -1,0 +1,15 @@
+---
+
+- name: RouterOS test to query resource usage
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+
+    - name: Display resource statistics (routeros)
+      community.network.routeros_command:
+        commands: /system resource print
+      register: _routeros_resources
+
+    - ansible.builtin.debug:
+        var: _routeros_resources

@@ -1,0 +1,163 @@
+---
+
+# vars {{ routeros_interface_ethernet_common }} and {{ routeros_interface_ethernet_custom }} are merged
+# to {{ routeros_interface_ethernet }} in inventory/group_vars/mikrotik_switches/interface_ethernet.yml
+
+# Common config options which apply to every ethernet
+routeros_interface_ethernet_common:
+  # advertise: 10M-half,10M-full,100M-half,100M-full,1000M-half,1000M-full
+  arp: enabled
+  arp-timeout: auto
+  auto-negotiation: true
+  # bandwidth: unlimited/unlimited
+  # combo-mode: null
+  # comment: null
+  disabled: false
+  # fec-mode: null
+  full-duplex: true
+  l2mtu: 10218
+  # l2mtu: 1584
+  # l2mtu: "{{ routeros_max_l2mtu | default(1584) | int }}"  # this doesn't work. returns string and breaks idempotence
+  loop-protect: default
+  loop-protect-disable-time: 5m
+  loop-protect-send-interval: 5s
+  # mac-address: 18:FD:74:06:34:48
+  # mdix-enable: null
+  mtu: 1500
+  # orig-mac-address: 18:FD:74:06:34:48
+  # poe-out: null
+  # poe-priority: null
+  # poe-voltage: null
+  # power-cycle-interval: null
+  # power-cycle-ping-address: null
+  # power-cycle-ping-enabled: null
+  # power-cycle-ping-timeout: null
+  rx-flow-control: 'off'
+  # sfp-rate-select: null
+  # sfp-shutdown-temperature: null
+  # speed: 1Gbps
+  tx-flow-control: 'off'
+
+# Custom options which are specific to each ethernet
+# You can override here any of the common vars defined in {{ routeros_interface_ethernet_common }}
+routeros_interface_ethernet_custom:
+  ether1:
+    default-name: 'ether1'
+  ether2:
+    default-name: 'ether2'
+  ether3:
+    default-name: 'ether3'
+  ether4:
+    default-name: 'ether4'
+  ether5:
+    default-name: 'ether5'
+  ether6:
+    default-name: 'ether6'
+  ether7:
+    default-name: 'ether7'
+  ether8:
+    default-name: 'ether8'
+  ether9:
+    default-name: 'ether9'
+  ether10:
+    default-name: 'ether10'
+  ether11:
+    default-name: 'ether11'
+  ether12:
+    default-name: 'ether12'
+  ether13:
+    default-name: 'ether13'
+  ether14:
+    default-name: 'ether14'
+  ether15:
+    default-name: 'ether15'
+  ether16:
+    default-name: 'ether16'
+  ether17:
+    default-name: 'ether17'
+  ether18:
+    default-name: 'ether18'
+  ether19:
+    default-name: 'ether19'
+  ether20:
+    default-name: 'ether20'
+  ether21:
+    default-name: 'ether21'
+  ether22:
+    default-name: 'ether22'
+  ether23:
+    default-name: 'ether23'
+  ether24:
+    default-name: 'ether24'
+  ether25:
+    default-name: 'ether25'
+  ether26:
+    default-name: 'ether26'
+  ether27:
+    default-name: 'ether27'
+  ether28:
+    default-name: 'ether28'
+  ether29:
+    default-name: 'ether29'
+  ether30:
+    default-name: 'ether30'
+  ether31:
+    default-name: 'ether31'
+  ether32:
+    default-name: 'ether32'
+  ether33:
+    default-name: 'ether33'
+  ether34:
+    default-name: 'ether34'
+  ether35:
+    default-name: 'ether35'
+  ether36:
+    default-name: 'ether36'
+  ether37:
+    default-name: 'ether37'
+  ether38:
+    default-name: 'ether38'
+  ether39:
+    default-name: 'ether39'
+  ether40:
+    default-name: 'ether40'
+  ether41:
+    default-name: 'ether41'
+  ether42:
+    default-name: 'ether42'
+  ether43:
+    default-name: 'ether43'
+  ether44:
+    default-name: 'ether44'
+  ether45:
+    default-name: 'ether45'
+  ether46:
+    default-name: 'ether46'
+  ether47:
+    default-name: 'ether47'
+  ether48:
+    default-name: 'ether48'
+  ether49:
+    default-name: 'ether49'
+    comment: 'mgmt-port not in bridge'
+    l2mtu: 1598
+  sfp_sfpplus1:
+    default-name: 'sfp-sfpplus1'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus2:
+    default-name: 'sfp-sfpplus2'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus3:
+    default-name: 'sfp-sfpplus3'
+    sfp-shutdown-temperature: 95
+  sfp_sfpplus4:
+    default-name: 'sfp-sfpplus4'
+    sfp-shutdown-temperature: 95
+  qsfpplus1_1:
+    default-name: 'qsfpplus1-1'
+    sfp-shutdown-temperature: 95
+    fec-mode: 'auto'
+  qsfpplus2_1:
+    default-name: 'qsfpplus2-1'
+    sfp-shutdown-temperature: 95
+    fec-mode: 'auto'

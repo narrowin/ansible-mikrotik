@@ -1,0 +1,36 @@
+---
+
+mikrotik_api_username: 'admin'
+mikrotik_api_password: 'admin'
+
+local_backups_top_folder: "{{ playbook_dir }}/../backups/"
+local_mkt_config_dump_folder: "{{ playbook_dir }}/../mikrotik-config-vars/"
+
+mkt_common_settings:
+  ip_dns_servers: '10.10.0.254'
+  system_ntp_client_servers: '10.10.0.254'
+  system_logging_action_remote: '10.10.0.251'
+
+  ip_service_non_ssl_api_disabled: false # api on port 8728
+  ip_service_ssl_api_disabled: true
+  ip_service_rest_api_disabled: true
+
+  ip_service_ssl_api_cert: 'none'
+
+  # Firewall addresses list that can access the local mgmt network
+  # If you want no restrictions use 0.0.0.0/0
+  #ip_firewall_address_list: '10.10.0.0/24'
+  ip_firewall_address_list: '0.0.0.0/0'
+
+  ipv6_settings_disable_ipv6: true
+
+  interface_list_member_interface: 'ether1'
+
+  snmp_enabled: true
+  snmp_trap_community: 'public'
+  snmp_community_name: 'public'
+  # PUT ips here to restrict access to snmp from these addresses
+  snmp_community_addresses: "::/0"
+
+  system_clock_time_zone_name: 'Europe/Zurich'
+  system_clock_time_zone_autodetect: true

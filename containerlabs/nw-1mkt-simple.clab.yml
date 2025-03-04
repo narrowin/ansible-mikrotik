@@ -1,0 +1,21 @@
+---
+name: nw-1mkt-simple
+
+mgmt:
+  network: nw-1mkt-simple-clab
+  ipv4-subnet: 10.10.0.0/24
+
+topology:
+  nodes:
+    n1:
+      kind: mikrotik_ros
+      image: ghcr.io/narrowin/vrnetlab_mikrotik_routeros:7.18
+      mgmt-ipv4: 10.10.0.11
+
+  links:
+    # Used only to put more interfaces into the node, otherwise it would start
+    # only with one, connected to the management network.
+    - type: dummy
+      endpoint:
+        node: n1
+        interface: ether12

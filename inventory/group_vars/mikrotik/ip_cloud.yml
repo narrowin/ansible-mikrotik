@@ -1,0 +1,9 @@
+---
+
+# Cloud features disabled
+routeros_ip_cloud:
+  - ddns-enabled: false
+    ddns-update-interval: none
+    update-time: false
+
+

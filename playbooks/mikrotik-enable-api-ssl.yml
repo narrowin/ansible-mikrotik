@@ -1,0 +1,36 @@
+---
+
+# before you can execute this playbook you MUST execute playbooks/mikrotik-generate-ssl-certs.yml
+# to generate the required SSL certs we will later upload to the switches.
+# SSL certs are stored in folder secrets/
+
+- name: Enable api-ssl in mikrotik devices
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+
+    - name: "Upload all the required files to the switch"
+      ansible.netcommon.net_put:
+        src: "{{ playbook_dir }}/../secrets/mikrotik-ca-and-certs/{{ item }}"
+        dest: "{{ item }}"
+      loop:
+        - mikrotik-ca-cert-self-signed.crt
+        - cert-mikrotik-cert.pem
+        - cert-mikrotik-priv-key.pem
+
+    - name: "Import the certificates in the switch"
+      community.routeros.command:
+        commands: /certificate/import file-name=mikrotik-ca-cert-self-signed.crt name=mkt-ca passphrase=""
+
+    - name: "Import the certificates in the switch"
+      community.routeros.command:
+        commands: /certificate/import file-name=mikrotik-cert.pem passphrase="" name=mkt-ca
+
+    - name: "Import the certificates in the switch"
+      community.routeros.command:
+        commands: /certificate/import file-name=mikrotik-priv-key.pem passphrase="" name=mkt-ca
+
+    - name: "Enable api-ssl access to switch/router with imported certificates"
+      community.routeros.command:
+        commands: /ip/service/set api-ssl disabled=no certificate=mkt-ca

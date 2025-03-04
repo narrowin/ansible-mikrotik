@@ -1,0 +1,10 @@
+---
+
+# add a mgmt interface list
+routeros_interface_list:
+  - name: mgmt
+    comment: interfaces in management network
+    exclude: ''
+    include: ''
+
+

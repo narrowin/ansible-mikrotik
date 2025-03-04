@@ -1,0 +1,6 @@
+---
+routeros_interface_bridge_vlan:
+  - bridge: bridge0
+    vlan-ids: 10
+    comment: DATA
+    tagged: uplink-sw-dist1

@@ -1,0 +1,42 @@
+---
+
+routeros_ip_firewall_filter:
+  # specific input rules talking to the device
+  - chain: input
+    action: accept
+    comment: established related connections
+    connection-state: established,related
+    disabled: false
+    # rule restricts all access to the mgmt to come from local network segment
+  - chain: input
+    action: accept
+    src-address-list: allowed_to_device
+    disabled: false
+    # as good network citizens we want to allow icmp (XXX might want to restrict to echo req/response?)
+  - chain: input
+    action: accept
+    protocol: icmp
+    src-address-list: allowed_to_device
+    disabled: false
+  - chain: input
+    action: accept
+    comment: API through ssh local forward
+    dst-port: 8728,8729
+    protocol: tcp
+    src-address: 127.0.0.1
+    disabled: false
+  - chain: input
+    action: accept
+    comment: API access from admin network
+    dst-port: 8728,8729
+    protocol: tcp
+    src-address-list: allowed_to_device
+    disabled: false
+  # MAKE SURE THESE ARE THE LAST RULES YOU DEPLOY OTHERWISE YOU WILL BE LOCKED OUT!
+  # default chain rules
+  - chain: input
+    action: drop
+  - chain: output
+    action: accept
+  - chain: forward
+    action: drop

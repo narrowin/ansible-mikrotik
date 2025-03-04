@@ -1,0 +1,12 @@
+---
+
+routeros_interface_bridge_vlan:
+  - bridge: bridge
+    vlan-ids: 4094
+    comment: 'untagged mlag peerlink communitcation'
+
+  - bridge: bridge
+    vlan-ids: 10
+    comment: 'Cluster network'
+    tagged: peerlink,mlag-bond-1,mlag-bond-2,mlag-bond-3,mlag-bond-4,mlag-bond-5,mlag-bond-6,mlag-bond-7,mlag-bond-8,mlag-bond-9,mlag-bond-10,mlag-bond-11,mlag-bond-12,mlag-bond-13,mlag-bond-14,mlag-bond-15,mlag-bond-16,mlag-bond-17,mlag-bond-18,mlag-bond-19,mlag-bond-22
+

@@ -1,0 +1,5 @@
+---
+
+# hostname
+routeros_system_identity:
+  - name: "{{ inventory_hostname }}"

@@ -1,0 +1,5 @@
+---
+
+routeros_interface_bridge_mlag:
+  - bridge: bridge
+    peer-port: peerlink

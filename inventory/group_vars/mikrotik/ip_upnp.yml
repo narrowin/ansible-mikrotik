@@ -1,0 +1,7 @@
+---
+
+# disable upnp
+routeros_ip_upnp:
+  - enabled: false
+
+

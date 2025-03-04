@@ -1,0 +1,10 @@
+---
+
+# DNS server settings
+routeros_ip_dns:
+  # XXX make this a group var
+  - servers: "{{ mkt_common_settings.ip_dns_servers }}"
+    allow-remote-requests: false
+    cache-size: 2048
+
+

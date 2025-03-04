@@ -1,0 +1,26 @@
+---
+
+# #routeros_interface_bridge_with_defaults
+routeros_interface_bridge:
+  - name: bridge
+    ageing-time: 5m
+    arp: enabled
+    arp-timeout: auto
+    auto-mac: true
+    comment: null
+    dhcp-snooping: false
+    disabled: false
+    ether-type: '0x8100'
+    fast-forward: true
+    forward-delay: 15s
+    frame-types: admit-all
+    igmp-snooping: false
+    ingress-filtering: true
+    max-message-age: 20s
+    mtu: auto
+    priority: '0x4000'
+    protocol-mode: rstp
+    pvid: 1
+    transmit-hold-count: 6
+    vlan-filtering: true
+

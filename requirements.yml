@@ -1,0 +1,7 @@
+---
+
+# ansible-galaxy collection install -r requirements.yml -p ./collections
+collections:
+
+  - name: community.routeros
+    version: 3.2.0

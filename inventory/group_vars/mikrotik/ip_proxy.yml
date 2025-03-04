@@ -1,0 +1,8 @@
+---
+
+# Disable proxy server
+routeros_ip_proxy:
+  - enabled: false
+    max-cache-object-size: 2048
+
+

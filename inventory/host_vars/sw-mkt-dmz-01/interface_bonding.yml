@@ -1,0 +1,26 @@
+---
+
+# #routeros_interface_bond
+routeros_interface_bond:
+- name: uplink-bond
+  arp: enabled
+  arp-interval: 100ms
+  arp-ip-targets: ''
+  arp-timeout: auto
+  comment: 'uplink-bond trunk'
+  disabled: false
+  down-delay: 0ms
+  #forced-mac-address: null
+  lacp-rate: 30secs
+  #lacp-user-key: null
+  link-monitoring: mii
+  mii-interval: 100ms
+  min-links: 0
+  #mlag-id: null
+  mode: 802.3ad
+  mtu: 1500
+  primary: none
+  slaves: sfp-sfpplus3,sfp-sfpplus4
+  transmit-hash-policy: layer-2
+  up-delay: 0ms
+

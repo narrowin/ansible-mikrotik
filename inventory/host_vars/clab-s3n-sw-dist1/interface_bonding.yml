@@ -1,0 +1,8 @@
+---
+routeros_interface_bond:
+  - name: bond1-sw-acc1
+    disabled: false
+    down-delay: 0ms
+    link-monitoring: arp
+    arp-ip-targets: 172.16.0.11
+    slaves: ether11,ether12

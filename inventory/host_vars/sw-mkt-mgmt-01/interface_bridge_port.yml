@@ -1,0 +1,128 @@
+---
+
+# vars {{ routeros_interface_bridge_port_common }} and {{ routeros_interface_bridge_port_custom }} are merged
+# to {{ routeros_interface_bridge_port }} in inventory/group_vars/mikrotik/interface_bridge_port.yml
+
+# Common config options which apply to every port
+routeros_interface_bridge_port_common:
+  bridge: bridge
+  bpdu-guard: no
+  edge: auto
+  hw: yes
+  frame-types: admit-only-untagged-and-priority-tagged
+  learn: yes
+  multicast-router: disabled
+  point-to-point: no
+  pvid: 1
+
+# Custom options which are specific to each port
+# You can override here any of the common vars defined in {{ routeros_interface_bridge_port_common }}
+routeros_interface_bridge_port_custom:
+  ether1:
+    interface: ether1
+  ether2:
+    interface: ether2
+  ether3:
+    interface: ether3
+  ether4:
+    interface: ether4
+  ether5:
+    interface: ether5
+  ether6:
+    interface: ether6
+  ether7:
+    interface: ether7
+  ether8:
+    interface: ether8
+  ether9:
+    interface: ether9
+  ether10:
+    interface: ether10
+  ether11:
+    interface: ether11
+  ether12:
+    interface: ether12
+  ether13:
+    interface: ether13
+  ether14:
+    interface: ether14
+  ether15:
+    interface: ether15
+  ether16:
+    interface: ether16
+  ether17:
+    interface: ether17
+  ether18:
+    interface: ether18
+  ether19:
+    interface: ether19
+  ether20:
+    interface: ether20
+  ether21:
+    interface: ether21
+  ether22:
+    interface: ether22
+  ether23:
+    interface: ether23
+  ether24:
+    interface: ether24
+  ether25:
+    interface: ether25
+  ether26:
+    interface: ether26
+  ether27:
+    interface: ether27
+  ether28:
+    interface: ether28
+  ether29:
+    interface: ether29
+  ether30:
+    interface: ether30
+  ether31:
+    interface: ether31
+  ether32:
+    interface: ether32
+  ether33:
+    interface: ether33
+  ether34:
+    interface: ether34
+  ether35:
+    interface: ether35
+  ether36:
+    interface: ether36
+  ether37:
+    interface: ether37
+  ether38:
+    interface: ether38
+  ether39:
+    interface: ether39
+  ether40:
+    interface: ether40
+  ether41:
+    interface: ether41
+  ether42:
+    interface: ether42
+  ether43:
+    interface: ether43
+  ether44:
+    interface: ether44
+  ether45:
+    interface: ether45
+  ether46:
+    interface: ether46
+  ether47:
+    interface: ether47
+  ether48:
+    interface: ether48
+  sfp_sfpplus1:
+    interface: sfp-sfpplus1
+  sfp_sfpplus2:
+    interface: sfp-sfpplus2
+  sfp_sfpplus3:
+    interface: sfp-sfpplus3
+  sfp_sfpplus4:
+    interface: sfp-sfpplus4
+  qsfpplus1_1:
+    interface: qsfpplus1-1
+  qsfpplus2_1:
+    interface: qsfpplus2-1

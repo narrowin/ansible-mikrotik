@@ -1,0 +1,8 @@
+---
+routeros_interface_bond:
+  - name: uplink-sw-dist1
+    disabled: false
+    down-delay: 0ms
+    link-monitoring: arp
+    arp-ip-targets: 172.16.0.13
+    slaves: ether23,ether24

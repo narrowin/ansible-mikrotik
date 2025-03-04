@@ -1,0 +1,25 @@
+---
+
+# remote syslog  action
+routeros_system_logging_action:
+  - name: memory
+    memory-lines: 1000
+    memory-stop-on-full: false
+    target: memory
+  - name: disk
+    disk-file-count: 2
+    disk-file-name: flash/log
+    disk-lines-per-file: 1000
+    disk-stop-on-full: false
+    target: disk
+  - name: echo
+    remember: true
+    target: echo
+  - name: remote
+    bsd-syslog: true
+    remote: "{{ mkt_common_settings.system_logging_action_remote }}"
+    remote-port: 5514
+    syslog-facility: daemon
+    syslog-severity: auto
+    syslog-time-format: bsd-syslog
+    target: remote

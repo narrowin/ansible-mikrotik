@@ -1,0 +1,72 @@
+[mikrotik_routers]
+#rtm01.narrowin.local
+#rtm02.narrowin.local
+
+[mikrotik_switches]
+# CHR containerlab examples
+clab-simple-n1 ansible_host=10.10.0.11
+clab-s3n-sw-acc1 ansible_host=10.10.1.11
+clab-s3n-sw-acc2 ansible_host=10.10.1.12
+clab-s3n-sw-dist1 ansible_host=10.10.1.13
+
+# real hw examples
+# sw-mkt-mgmt-01 ansible_host=10.10.0.1
+# sw-mkt-dist-01 ansible_host=10.10.0.11
+# sw-mkt-dist-02 ansible_host=10.10.0.12
+# sw-mkt-cluster-01 ansible_host=10.10.0.21
+
+[mikrotik_chr_12ports_containerlab]
+clab-simple-n1
+clab-s3n-sw-dist1
+
+[mikrotik_chr_24ports_containerlab]
+clab-s3n-sw-acc1
+clab-s3n-sw-acc2
+
+[mikrotik_s3n]
+clab-s3n-sw-acc1
+clab-s3n-sw-acc2
+clab-s3n-sw-dist1
+
+[mikrotik_s3n:vars]
+ansible_user=admin
+ansible_password=admin
+
+[mikrotik_switches_24ports_crs326_24s]
+sw-mkt-dist-01
+sw-mkt-dist-02
+
+sw-mkt-dmz-dist-01
+sw-mkt-dmz-dist-02
+
+[mikrotik_switches_24ports_crs326_24g]
+sw-mkt-mgmt-01
+
+[mikrotik_switches_24ports:children]
+mikrotik_switches_24ports_crs326_24s
+mikrotik_switches_24ports_crs326_24g
+
+[mikrotik_switches_48ports_crs354_48g]
+sw-mkt-cluster-01
+
+[mikrotik_switches_48ports:children]
+mikrotik_switches_48ports_crs354_48g
+
+[mikrotik_mgmt]
+sw-mkt-mgmt-01
+
+[mikrotik:children]
+mikrotik_routers
+mikrotik_switches
+
+[mikrotik:vars]
+ansible_connection=ansible.netcommon.network_cli
+ansible_network_os=community.network.routeros
+ansible_user=admin+cet512w
+ansible_ssh_private_key_file='~/.ssh/id_rsa_network_devices'
+ansible_become=yes
+ansible_become_method=enable
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+#[mikrotik_internal:vars]
+#ansible_ssh_common_args='-o StrictHostKeyChecking=no ProxyCommand="ssh -W %h:%p -q user@rtm01.narrowin.local" -i ~/.ssh/id_rsa_priv'

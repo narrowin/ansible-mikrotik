@@ -1,0 +1,112 @@
+---
+
+- name: Generate mikrotik SSL certificates
+  hosts: localhost
+  gather_facts: false
+  become: no
+
+
+  vars:
+
+    # playbooks executed in localhost don't read the inventory vars so we have to define
+    # the variable {{ local_secrets_top_folder }} at the playbook level
+    local_secrets_top_folder: "{{ playbook_dir }}/../secrets"
+
+    # folder to store the private keys, CSRs and certificates
+    local_certs_destination_folder: "{{ local_secrets_top_folder }}/mikrotik-ca-and-certs"
+
+    # settings for our internal CA (self-signed)
+    local_ca_privkey: "mikrotik-ca-priv-key.pem"
+    local_ca_csr: "mikrotik-ca-csr.pem"
+    local_ca_cert: "mikrotik-ca-cert-self-signed.crt"  # use .crt extension because command 'update-ca-certificates' requires .crt extension
+    local_ca_cert_common_name: "narrowin.local"
+
+    # settings for the ssl cert (signed with the example CA)
+    local_ssl_privkey: "mikrotik-priv-key.pem"
+    local_ssl_csr: "mikrotik-csr.pem"
+    local_ssl_cert: "mikrotik-cert.pem"
+    local_ssl_cert_common_name: "narrowin.local"
+    local_ssl_cert_dns_aliases:
+      - mikrotik.narrowin.local
+
+    # these apply to the two SSL certicates we will generate (the CA certificate and the LDAP certificate)
+    local_cert_email: "admin@narrowin.local"
+    local_cert_country: "CH"
+    local_cert_state: "Basel-Stadt"
+    local_cert_locality: "Basel"
+    local_cert_organization_name: "University of Basel"
+    local_cert_organizational_unit_name: "example"
+    local_cert_validity_time: "+7200d"
+
+
+  tasks:
+
+    - name: Create destination folder to store all the private keys, CSRs and certificates
+      ansible.builtin.file:
+        path: "{{ local_certs_destination_folder }}"
+        state: directory
+        mode: '0700'
+
+
+    - name: Create the private key, CSR and certificate for our local self-signed CA
+      block:
+
+        - name: Create SSL private key for the example CA
+          community.crypto.openssl_privatekey:
+            path: "{{ local_certs_destination_folder }}/{{ local_ca_privkey }}"
+            type: 'RSA'
+            size: 2048
+
+        - name: Create Certificate Signing Request for the example CA
+          community.crypto.openssl_csr:
+            path: "{{ local_certs_destination_folder }}/{{ local_ca_csr }}"
+            privatekey_path: "{{ local_certs_destination_folder }}/{{ local_ca_privkey }}"
+            common_name: "{{ local_ca_cert_common_name }}"
+            email_address: "{{ local_cert_email }}"
+            country_name: "{{ local_cert_country }}"
+            state_or_province_name: "{{ local_cert_state }}"
+            locality_name: "{{ local_cert_locality }}"
+            organization_name: "{{ local_cert_organization_name }}"
+            organizational_unit_name: "{{ local_cert_organizational_unit_name }}"
+
+        - name: Create the example CA certificate (self-signed)
+          community.crypto.x509_certificate:
+            path: "{{ local_certs_destination_folder }}/{{ local_ca_cert }}"
+            privatekey_path: "{{ local_certs_destination_folder }}/{{ local_ca_privkey }}"
+            csr_path: "{{ local_certs_destination_folder }}/{{ local_ca_csr }}"
+            provider: selfsigned
+            selfsigned_not_after: "{{ local_cert_validity_time }}"
+
+
+    - name: Create the private key, CSR and certificate. Sign it with the CA created above
+      block:
+
+        - name: Create SSL private key
+          community.crypto.openssl_privatekey:
+            path: "{{ local_certs_destination_folder }}/{{ local_ssl_privkey }}"
+            type: 'RSA'
+            size: 2048
+
+        - name: Create Certificate Signing Request
+          community.crypto.openssl_csr:
+            path: "{{ local_certs_destination_folder }}/{{ local_ssl_csr }}"
+            privatekey_path: "{{ local_certs_destination_folder }}/{{ local_ssl_privkey }}"
+            common_name: "{{ local_ssl_cert_common_name }}"
+            email_address: "{{ local_cert_email }}"
+            country_name: "{{ local_cert_country }}"
+            state_or_province_name: "{{ local_cert_state }}"
+            locality_name: "{{ local_cert_locality }}"
+            organization_name: "{{ local_cert_organization_name }}"
+            organizational_unit_name: "{{ local_cert_organizational_unit_name }}"
+            subject_alt_name: "{{ item.value | map('regex_replace', '^', 'DNS:') | list }}"
+          with_dict:
+            dns_server: "{{ local_ssl_cert_dns_aliases }}"
+
+        - name: Create the certificate (signed with the private CA we generated above)
+          community.crypto.x509_certificate:
+            path: "{{ local_certs_destination_folder }}/{{ local_ssl_cert }}"
+            csr_path: "{{ local_certs_destination_folder }}/{{ local_ssl_csr }}"
+            ownca_path: "{{ local_certs_destination_folder }}/{{ local_ca_cert }}"
+            ownca_privatekey_path: "{{ local_certs_destination_folder }}/{{ local_ca_privkey }}"
+            provider: ownca
+            ownca_not_after: "{{ local_cert_validity_time }}"

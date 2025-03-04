@@ -1,0 +1,10 @@
+---
+
+# SSH server settings
+routeros_ip_ssh:
+  - allow-none-crypto: false
+    always-allow-password-login: true
+    forwarding-enabled: local
+    # XXX if this is changed we need to run /ip ssh regenerate-host-key
+    # host-key-size: 2048
+    strong-crypto: true

@@ -1,0 +1,36 @@
+---
+
+# these tasks are in a independent file so we can loop over all the api endpoints
+# https://ericsysmin.com/2019/06/20/how-to-loop-blocks-of-code-in-ansible/
+
+- name: Query mikrotik config info {{ item }}
+  community.routeros.api_info:
+    path: "{{ item | regex_replace('_', ' ') }}"
+    include_builtin: False
+    include_dynamic: False
+    handle_disabled: "null-value"
+    hide_defaults: False
+  register: _item_cfg
+  ignore_errors: True
+
+- name: Create backups folder in the ansible control host
+  ansible.builtin.file:
+    path: "{{ folder_to_store_files }}/{{ inventory_hostname }}"
+    state: directory
+    mode: 0700
+  delegate_to: localhost
+  become: False
+
+- name: Writing yaml vars to file {{ item }}.yml
+  ansible.builtin.copy:
+    dest: "{{ folder_to_store_files }}/{{ inventory_hostname }}/{{ item }}.yml"
+    content:  "{{ _item_cfg['result'] | to_nice_yaml(indent=2) }}"
+  when: not _item_cfg.failed
+
+- name: Save list of not found API endpoints in {{ folder_to_store_files }}/not-found.txt
+  ansible.builtin.lineinfile:
+    path: "{{ folder_to_store_files }}/{{ inventory_hostname }}/not-found.txt"
+    create: True
+    insertafter: EOF
+    line: "{{ item }}"
+  when: _item_cfg.failed

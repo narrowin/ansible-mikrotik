@@ -1,0 +1,11 @@
+---
+
+# Add the mgmt interface to the mgmt list
+routeros_interface_list_member:
+  #XXX This should be a variable depending on the switch-type??
+  - interface: "{{ mkt_common_settings.interface_list_member_interface }}"
+    list: mgmt
+    comment: null
+    disabled: false
+
+

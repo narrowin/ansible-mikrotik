@@ -1,0 +1,9 @@
+---
+
+# Cloud features not supported on CHR
+routeros_ip_cloud:
+  - ddns-enabled: auto
+    ddns-update-interval: none
+    update-time: false
+
+

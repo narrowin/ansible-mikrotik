@@ -1,0 +1,11 @@
+---
+
+# Add the mgmt interface to the mgmt list
+routeros_interface_list_member:
+  #XXX This should be a variable depending on the switch-type??
+  - interface: ether49
+    list: mgmt
+    comment: null
+    disabled: false
+
+

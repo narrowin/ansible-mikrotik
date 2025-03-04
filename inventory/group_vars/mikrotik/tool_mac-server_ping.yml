@@ -1,0 +1,5 @@
+---
+
+# When MAC Ping is enabled, other hosts on the same broadcast domain can use ping tool to ping the mac address.
+routeros_tool_mac_server_ping:
+  - enabled: false

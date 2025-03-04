@@ -1,0 +1,101 @@
+---
+
+# vars {{ routeros_interface_bridge_port_common }} and {{ routeros_interface_bridge_port_custom }} are merged
+# to {{ routeros_interface_bridge_port }} in inventory/group_vars/mikrotik/interface_bridge_port.yml
+
+# Common config options which apply to every port
+routeros_interface_bridge_port_common:
+  #auto-isolate: no
+  bpdu-guard: no
+  bridge: bridge
+  #broadcast-flood: true
+  #comment: null
+  disabled: no
+  edge: auto  # this should be 'no'
+  #fast-leave: no
+  frame-types: admit-all  # it was admit-only-vlan-tagged
+  horizon: none
+  hw: true
+  ingress-filtering: true
+  internal-path-cost: 10
+  learn: auto
+  multicast-router: temporary-query
+  path-cost: 10
+  point-to-point: auto
+  priority: '0x80'
+  pvid: 1
+  restricted-role: no
+  restricted-tcn: no
+  tag-stacking: no
+  trusted: no
+  unknown-multicast-flood: true
+  unknown-unicast-flood: true
+
+# Custom options which are specific to each port
+# You can override here any of the common vars defined in {{ routeros_interface_bridge_port_common }}
+routeros_interface_bridge_port_custom:
+  peerlink:
+    interface: peerlink
+    pvid: 4094
+    frame-types: admit-all
+    #comment: 'link to spine switch sw-mkt-dist-01'
+  mlag-bond-1:
+    interface: mlag-bond-1
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-2:
+    interface: mlag-bond-2
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-3:
+    interface: mlag-bond-3
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-4:
+    interface: mlag-bond-4
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-5:
+    interface: mlag-bond-5
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-6:
+    interface: mlag-bond-6
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-7:
+    interface: mlag-bond-7
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-8:
+    interface: mlag-bond-8
+    bpdu-guard: yes
+    comment: 'access port used for central services e.g. proxmox'
+  mlag-bond-9:
+    interface: mlag-bond-9
+  mlag-bond-10:
+    interface: mlag-bond-10
+  mlag-bond-11:
+    interface: mlag-bond-11
+  mlag-bond-12:
+    interface: mlag-bond-12
+  mlag-bond-13:
+    interface: mlag-bond-13
+  mlag-bond-14:
+    interface: mlag-bond-14
+  mlag-bond-15:
+    interface: mlag-bond-15
+  mlag-bond-16:
+    interface: mlag-bond-16
+  mlag-bond-17:
+    interface: mlag-bond-17
+  mlag-bond-18:
+    interface: mlag-bond-18
+  mlag-bond-19:
+    interface: mlag-bond-19
+  mlag-bond-20:
+    interface: mlag-bond-20
+  mlag-bond-21:
+    interface: mlag-bond-21
+  mlag-bond-22:
+    interface: mlag-bond-22

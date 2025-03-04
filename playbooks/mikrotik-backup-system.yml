@@ -1,0 +1,44 @@
+---
+
+- name: RouterOS system backup
+  hosts: mikrotik
+  gather_facts: false
+
+
+  tasks:
+
+    - name: Create backups folder in the ansible control host
+      ansible.builtin.file:
+        path: "{{ local_backups_top_folder }}/inventory_hostname }}"
+        state: directory
+        mode: '700'
+      delegate_to: localhost
+      become: false
+
+    - name: "Starting ROS System Backup to memory"
+      community.routeros.command:
+        commands: /system backup save name {{ inventory_hostname }}
+
+    # module ansible.netcommon.net_get requires "pip install scp" in the ansible control host
+    - name: "Copy ROS system backup to ansible control host"
+      ansible.netcommon.net_get:
+        src: "{{ inventory_hostname }}.backup"
+        dest: "{{ local_backups_top_folder }}/inventory_hostname }}/{{ inventory_hostname }}.system.backup"
+
+    - name: "Remove the backup file from memory"
+      community.routeros.command:
+        commands: /file/remove {{ inventory_hostname }}
+
+    # - name: "Copying ROS System Backup to ansible control host"
+    #   ansible.netcommon.net_get:
+    #     src: "{{ inventory_hostname }}.rsc.backup"
+    #     dest: "{{ local_backups_top_folder }}/inventory_hostname }}.rsc"
+
+    # - name: "Starting ROS Configuration Backup"
+    #   community.routeros.command:
+    #     commands: "/export show-sensitive file={{inventory_hostname}}.backup"
+
+    # - name: "Copying ROS Configuation Backup to ansible control host"
+    #   ansible.netcommon.net_get:
+    #     src: "/flash/{{ inventory_hostname }}.rsc"
+    #     dest: "{{ local_backups_top_folder }}/inventory_hostname}}.backup"

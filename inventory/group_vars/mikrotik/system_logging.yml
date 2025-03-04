@@ -1,0 +1,36 @@
+---
+
+# register in system logging
+routeros_system_logging:
+  - action: memory
+    disabled: false
+    prefix: ''
+    topics: info
+  - action: memory
+    disabled: false
+    prefix: ''
+    topics: error
+  - action: memory
+    disabled: false
+    prefix: ''
+    topics: warning
+  - action: echo
+    disabled: false
+    prefix: ''
+    topics: critical
+  - action: remote
+    disabled: false
+    prefix: ''
+    topics: info
+  - action: remote
+    disabled: false
+    prefix: ''
+    topics: critical
+  - action: remote
+    disabled: false
+    prefix: ''
+    topics: error
+  - action: remote
+    disabled: false
+    prefix: ''
+    topics: warning
