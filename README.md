@@ -154,3 +154,4 @@ Once you have the certs you can upload them to the devices and enable the API ex
 
   * ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
   * The ansible vault password is stored in the password db with name "playbook-network-switches vault"
+
