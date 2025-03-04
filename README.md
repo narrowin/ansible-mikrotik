@@ -32,10 +32,7 @@ ansible-mikrotik enables network engineers to automate the configuration and man
 
 ## Requirements
 
-- **Ansible:** Version 2.9 or later.
-- **Python:** Version 3.6 or higher.
-- **Mikrotik RouterOS:** Compatible with RouterOS versions as specified in the role documentation.
-- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for ssh (Port: 22) and api-access (Port: 8728).
+- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for ssh (Port: 22) and api-access (Port: 8728) or ssl-api (Port: 8729).
 
 ---
 
