@@ -174,8 +174,6 @@ Contributions to ansible-mikrotik are welcome! Please follow these guidelines:
 - **Pull Requests:** Submit PRs with detailed descriptions of changes and reference any related issues.
 - **Documentation:** Update this README and any inline documentation as necessary.
 
-For additional guidelines, see our [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
 ---
 
 
