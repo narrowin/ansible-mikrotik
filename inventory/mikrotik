@@ -28,10 +28,6 @@ clab-s3n-sw-acc1
 clab-s3n-sw-acc2
 clab-s3n-sw-dist1
 
-[mikrotik_s3n:vars]
-ansible_user=admin
-ansible_password=admin
-
 [mikrotik_switches_24ports_crs326_24s]
 sw-mkt-dist-01
 sw-mkt-dist-02
@@ -63,10 +59,15 @@ mikrotik_switches
 ansible_connection=ansible.netcommon.network_cli
 ansible_network_os=community.network.routeros
 ansible_user=admin+cet512w
+# XXX don't use cleartext pws in prod use ansible vault or key based auth!
+ansible_password=admin
 #ansible_ssh_private_key_file='~/.ssh/id_rsa'
-ansible_ssh_private_key_file='/dev/null'
-ansible_become=yes
-ansible_become_method=enable
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+#[mikrotik_internal:vars]
+#ansible_ssh_common_args='-o StrictHostKeyChecking=no ProxyCommand="ssh -W %h:%p -q user@rtm01.narrowin.local" -i ~/.ssh/id_rsa_priv'
+
+#ansible_ssh_private_key_file='~/.ssh/id_rsa'
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 #[mikrotik_internal:vars]
