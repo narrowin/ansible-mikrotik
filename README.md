@@ -3,7 +3,6 @@
 [![Discord][discord-svg]][discord-url] [![DevPod][devpod-svg]][devpod-url] [![Codespaces][codespaces-svg]][codespaces-url]  
 ![w212][w212][Learn more](https://containerlab.dev/macos/#devpod)![w90][w90][Learn more](https://containerlab.dev/manual/codespaces)
 
-
 [discord-svg]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/join-discord-btn.svg
 [discord-url]: https://discord.gg/6pbRj546gr
 [devpod-svg]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/open-in-devpod-btn.svg
@@ -13,8 +12,7 @@
 [w212]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/w212h1.svg
 [w90]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/w90h1.svg
 
-
-**Automating Mikrotik Device Configuration with Ansible**
+## Automating Mikrotik Device Configuration with Ansible
 
 ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, this role simplifies network operations, minimizes manual errors, and streamlines deployment in dynamic network environments.
 
@@ -36,14 +34,13 @@ ansible-mikrotik enables network engineers to automate the configuration and man
 
 ---
 
-## Quick start options
+## Setup
 
-Spin up a lab in the [containerlabs](containerlabs) folder. No local software dependencies - fully self-contained environment with a lab topology, ansible and this repo installed. All batteries included! 
+To run completely in your browser use [codespaces](https://docs.github.com/en/codespaces) or run locallay using [devpods](https://devpod.sh).
 
-Either use the 
+**Be patient while the environment is spinnung up since it needs to pull some MBytes of containers for the system to be up and running.**
 
-## Installation
-
+### Local installation
 
 ```bash
 git clone https://github.com/narrowin/ansible-mikrotik.git
@@ -53,8 +50,32 @@ source venv/bin/activate
 (venv) $> ansible-galaxy collection install -r requirements.yml -p collections/
 ```
 
+To install contgainerlab for testing the playbooks follow: [containerlab docs](https://containerlab.dev/quickstart/)
 
-## Configuration
+## Running and testing the playbooks
+
+### Quick start options with containerlab
+
+Spin up labs in the [containerlabs](containerlabs) folder to test ansible playbooks with no local software dependencies - fully self-contained environment with a lab topology, ansible and this repo installed. All batteries included!
+
+The labs provided in thes repo are:
+
+- [single Mikrotik node to test with](containerlabs/simple.clab.yml)
+- [three Mikrotik nodes and two Linux clients](containerlabs/simple.clab.yml)
+
+#### Start containerlab from the terminal
+```bash
+# start the single node lab
+clab deploy -t containerlabs/simple.clab.yml
+# start the three node lab
+clab deploy -t containerlabs/s3n.clab.yml
+```
+
+#### Start containerlab from the [VS-Code extension](https://containerlab.dev/manual/vsc-extension/)
+
+Navigate on the left to containerlab. Right click on the lab you want to start and choose `Deploy`
+
+## Configuration when running against other Mikrotik devices
 
 [Key configuration options](group_vars/all.yml) include:
 
@@ -66,49 +87,74 @@ source venv/bin/activate
 All [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
 Check this file to identify the IPs for all switches and how to connect to them.
 
-
 *Connecting Requirements:*  
 
+```conole
+[Ansible Playbook] --> [Mikrotik RouterOS API]
+[Ansible Playbook] --> [Mikrotik RouterOS SSL-API]
+[Ansible Playbook] --> [Mikrotik RouterOS SSH] # some playbooks directly connect via ssh/scp
 ```
- [Ansible Playbook] --> [Mikrotik RouterOS API]
- [Ansible Playbook] --> [Mikrotik RouterOS SSL-API]
- [Ansible Playbook] --> [Mikrotik RouterOS SSH] # some playbooks directly connect via ssh/scp
-```
+
 ---
 
-## Usage
+## Running and testing the ansible playbooks
 
-### Backup config mikrotik switches
-```
-$> ansible-playbook playbooks/backup-mikrotik-config.yml --limit sw-mkt-mgmt-01
+### Backup config of mikrotik switches
 
+```bash
+# single node setup
+ansible-playbook playbooks/backup-mikrotik-config.yml --limit clab-simple-n1
+# three node setup
+ansible-playbook playbooks/backup-mikrotik-config.yml --limit mikrotik_s3n
 ```
-Mikrotik config files will be stored in the ansible control host in `playbook-network-switches/backups/`
+
+Mikrotik config files will be stored in the ansible control host in `backups/` unless reconfigured in [group_vars/all.yml](group_vars/all.yml)
 
 ### Backup system files mikrotik switches
-```
-$> ansible-playbook playbooks/backup-mikrotik-system.yml --limit sw-mkt-mgmt-01
 
+```bash
+# single node setup
+ansible-playbook playbooks/backup-mikrotik-system.yml --limit clab-simple-n1
+# three node setup
+ansible-playbook playbooks/backup-mikrotik-system.yml --limit mikrotik_s3n
 ```
+
 Mikrotik system files will be stored in the ansible control host in `playbook-network-switches/backups/`
 
 ### mikrotik file transfers
 
-Be aware that ansible-pyblibssh won't work to transfer files from/to the mikrotik devices using ansible module `ansible.netcommon.net_get`. 
-
+Be aware that ansible-pyblibssh won't work to transfer files from/to the mikrotik devices using ansible module `ansible.netcommon.net_get`.
 You have to install the packages defined in `requirements.txt` inside your venv (paramiko + scp)
 
+### Full device configuration
 
-
----
-
-## Example runs
-
-### Ansible dry run and show diff
+#### Ansible dry run and show diff
 
 ```bash
-ansible-playbook playbooks/mikrotik-configure.yml --limit clab-nw-1mkt-simple-n1 --check --diff
+# single node setup
+ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1 --check --diff
+# three node setup
+ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n --check --diff
 
+```
+
+#### Push config
+
+```bash
+# single node setup
+ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1
+# three node setup
+ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n
+```
+
+run the playbook twice and see the wonders of idempotency (:
+
+#### Push only specific parts/tags
+
+E.g.: bridge_ports in [playbook/mirotik-configure.yml](playbook/mirotik-configure.yml)
+
+```bash
+ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1 -t bridge_ports 
 ```
 
 ---
@@ -117,8 +163,11 @@ ansible-playbook playbooks/mikrotik-configure.yml --limit clab-nw-1mkt-simple-n1
 
 ### Check the ansible groups for a device in the inventory
 
-```
-$> ansible -i inventory/ -m debug -a var="hostvars[inventory_hostname]['group_names']" sw-mkt-cluster-05
+```bash
+# all groups
+ansible -m debug -a var="hostvars[inventory_hostname]['group_names']" sw-mkt-cluster-05
+# all vars
+ansible -m debug -a "var=vars" clab-simple-n1
 ```
 
 ---
@@ -128,7 +177,10 @@ $> ansible -i inventory/ -m debug -a var="hostvars[inventory_hostname]['group_na
 ### Details about bonding
 
 Make sure the members of a bond don't belong to the bridge. This requires the right order in the playbook. You should first execute the task
-configuring the bridge so the right interfaces are added/removed from/to the bridge and **afterwards** you can execute the task configuring the bond.
+
+- configuring the bridge so the right interfaces are added/removed from/to the bridge
+
+- **afterwards** you can execute the task configuring the bond.
 
 ### Details about trunk ports
 
@@ -136,7 +188,7 @@ Every trunk port should have `bpdu_guard: no` in `interface_brige_ports.yml`
 
 ### common error
 
-```
+```console
 TASK [Bond] **************************************************************************************************************************************************************************************************************************************************
 fatal: [sw-mkt-03]: FAILED! => changed=false
   msg: 'Error while creating entry for name="uplink-bond": failure: sfp-sfpplus3 already in bridge'
@@ -145,7 +197,7 @@ fatal: [sw-mkt-03]: FAILED! => changed=false
 
 This happens because the interfaces were manually added to the bridge during the initial setup. To fix it login to the switch and:
 
-```
+```console
 [user@sw-mkt-03] /interface/bridge/port> print     
 ...
 some output 
@@ -163,8 +215,6 @@ some output
 
 ```
 
-
-
 ## Contributing
 
 Contributions to ansible-mikrotik are welcome! Please follow these guidelines:
@@ -175,7 +225,6 @@ Contributions to ansible-mikrotik are welcome! Please follow these guidelines:
 - **Documentation:** Update this README and any inline documentation as necessary.
 
 ---
-
 
 ## License
 
@@ -196,7 +245,6 @@ The initial effort and development is a collaboration between [narrowin.ch](http
 - [Mikrotik RouterOS Documentation](https://help.mikrotik.com/docs/)
 - [Containerlab](https://containerlab.dev/)
 
-
 ### How to enable API with SSL in mikrotik devices
 
 First generate the required SSL certs executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
@@ -205,15 +253,13 @@ Once you have the certs you can upload them to the devices and enable the API ex
 
 ### Authentication with ssh-key and ansible-vault
 
-  Use ssh-keys for authentication for login on the network devices.
+Use ssh-keys for authentication for login on the network devices.
 
-  * private ssh key used for authentication should be located in `~/.ssh/id_rsa_priv`
+- private ssh key used for authentication should be located e.g. in `~/.ssh/id_rsa` # configure in mikrotik group_vars
 
-  Use ansible-vault to provide login- and API-credentials.
-  This addition helps in daily operations to keep the credentials i a securere standard place.
+- Use ansible-vault to provide login- and API-credentials. This addition helps in daily operations to keep the credentials in a securere standard place.
 
-  * ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
-  * The ansible vault password is stored in the password db with name "playbook-network-switches vault"
+- ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
 
 ---
 

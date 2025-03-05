@@ -28,10 +28,6 @@ clab-s3n-sw-acc1
 clab-s3n-sw-acc2
 clab-s3n-sw-dist1
 
-[mikrotik_s3n:vars]
-ansible_user=admin
-ansible_password=admin
-
 [mikrotik_switches_24ports_crs326_24s]
 sw-mkt-dist-01
 sw-mkt-dist-02
