@@ -15,6 +15,5 @@ playbooks/debug*
 venv
 secrets
 containerlabs/*.bak
-containerlabs/clab-nw-1mkt-simple
-containerlabs/clab-nw-3mkt
-containerlabs/s3n.clab
+containerlabs/clab-s3n
+containerlabs/clab-simple
