@@ -58,15 +58,13 @@ To install contgainerlab for testing the playbooks follow: [containerlab docs](h
 
 Spin up labs in the [containerlabs](containerlabs) folder to test ansible playbooks with no local software dependencies - fully self-contained environment with a lab topology, ansible and this repo installed. All batteries included!
 
-The labs provided in thes repo are:
+The labs provided by this repo are:
 
-- [single Mikrotik node to test with](containerlabs/simple.clab.yml)
 - [three Mikrotik nodes and two Linux clients](containerlabs/simple.clab.yml)
+- [single Mikrotik node to test with](containerlabs/simple.clab.yml) - to run this with ansible you need to enable the clab-simple-n1 definition in [inventory/mikrotik](inventory/mikrotik)
 
 #### Start containerlab from the terminal
 ```bash
-# start the single node lab
-clab deploy -t containerlabs/simple.clab.yml
 # start the three node lab
 clab deploy -t containerlabs/s3n.clab.yml
 ```
@@ -112,8 +110,6 @@ Check this file to identify the IPs for all switches and how to connect to them.
 ### Backup config of mikrotik switches
 
 ```bash
-# single node setup
-ansible-playbook playbooks/mikrotik-backup-config.yml --limit clab-simple-n1
 # three node setup
 ansible-playbook playbooks/mikrotik-backup-config.yml --limit mikrotik_s3n
 ```
@@ -123,8 +119,6 @@ Mikrotik config files will be stored in the ansible control host in `backups/` u
 ### Backup system files mikrotik switches
 
 ```bash
-# single node setup
-ansible-playbook playbooks/mikrotik-backup-system.yml --limit clab-simple-n1
 # three node setup
 ansible-playbook playbooks/mikrotik-backup-system.yml --limit mikrotik_s3n
 ```
@@ -141,8 +135,6 @@ You have to install the packages defined in `requirements.txt` inside your venv 
 #### Ansible dry run and show diff
 
 ```bash
-# single node setup
-ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1 --check --diff
 # three node setup
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n --check --diff
 
@@ -151,8 +143,6 @@ ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n --check -
 #### Push config
 
 ```bash
-# single node setup
-ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1
 # three node setup
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n
 ```
@@ -165,6 +155,11 @@ E.g.: bridge_ports in [playbook/mirotik-configure.yml](playbook/mirotik-configur
 
 ```bash
 ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1 -t bridge_ports 
+```
+
+three node setup
+```bash
+ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge_ports
 ```
 
 ---
