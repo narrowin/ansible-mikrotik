@@ -75,6 +75,16 @@ clab deploy -t containerlabs/s3n.clab.yml
 
 Navigate on the left to containerlab. Right click on the lab you want to start and choose `Deploy`
 
+
+### More inforamtion on containerlab and devpod, codespaces and the VS-code extension
+
+Great videos by [Roman Dodin](https://github.com/hellt):
+
+
+- [VS Code extension for Containerlab](https://www.youtube.com/watch?v=NIw1PbfCyQ4)
+- [Containerlab and DevPod](https://www.youtube.com/watch?v=ceDrFx2K3jE)
+- [Running Containlerab on macOS and Windows with Devcontainers](https://www.youtube.com/watch?v=Xue1pLiO0qQ)
+
 ## Configuration when running against other Mikrotik devices
 
 [Key configuration options](group_vars/all.yml) include:
@@ -103,9 +113,9 @@ Check this file to identify the IPs for all switches and how to connect to them.
 
 ```bash
 # single node setup
-ansible-playbook playbooks/backup-mikrotik-config.yml --limit clab-simple-n1
+ansible-playbook playbooks/mikrotik-backup-config.yml --limit clab-simple-n1
 # three node setup
-ansible-playbook playbooks/backup-mikrotik-config.yml --limit mikrotik_s3n
+ansible-playbook playbooks/mikrotik-backup-config.yml --limit mikrotik_s3n
 ```
 
 Mikrotik config files will be stored in the ansible control host in `backups/` unless reconfigured in [group_vars/all.yml](group_vars/all.yml)
@@ -114,9 +124,9 @@ Mikrotik config files will be stored in the ansible control host in `backups/` u
 
 ```bash
 # single node setup
-ansible-playbook playbooks/backup-mikrotik-system.yml --limit clab-simple-n1
+ansible-playbook playbooks/mikrotik-backup-system.yml --limit clab-simple-n1
 # three node setup
-ansible-playbook playbooks/backup-mikrotik-system.yml --limit mikrotik_s3n
+ansible-playbook playbooks/mikrotik-backup-system.yml --limit mikrotik_s3n
 ```
 
 Mikrotik system files will be stored in the ansible control host in `playbook-network-switches/backups/`
