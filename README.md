@@ -36,9 +36,14 @@ ansible-mikrotik enables network engineers to automate the configuration and man
 
 ## Setup
 
-To run completely in your browser use [codespaces](https://docs.github.com/en/codespaces) or run locallay using [devpods](https://devpod.sh).
+To run completely in your browser use [codespaces](https://docs.github.com/en/codespaces)
 
-**Be patient while the environment is spinnung up since it needs to pull some MBytes of containers for the system to be up and running.**
+**Be patient while the environment is spinnung up for the first time since it needs to pull some MBytes of containers for the system to be up and running (2-5 Minutes)**
+
+To run locally without any need for software installation using [devpods](https://devpod.sh). 
+
+**WARNING for Apple Silicon users (ARM based MACs) also wanting to try the lab: The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based MACs. You should use github codespaces instead for now!**
+
 
 ### Local installation
 
