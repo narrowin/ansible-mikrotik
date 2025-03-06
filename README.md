@@ -16,6 +16,8 @@
 
 ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, this role simplifies network operations, minimizes manual errors, and streamlines deployment in dynamic network environments.
 
+For some quick impressions of using this repo with a mikrotik containerlab setup check out the [narrowin demo controller](https://demo.narrowin.ch/).
+
 ---
 
 ## Features
