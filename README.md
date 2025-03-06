@@ -121,9 +121,9 @@ file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml](inventory/host
 
 #### Naming convention for inventory var names
 
-Every variable must start with prefix `routeros_` and then the api/cli endpoint where the config applies e.g. `routeros_interface_bridge` e.g.
+Every variable must start with prefix `routeros_` and then the api/cli endpoint where the config applies e.g. `routeros_interface_bridge`
 
-In file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml] you can find a variable named `routeros_interface_bridge`
+In file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml] you can find the variable named `routeros_interface_bridge`
 
   * variable starting with prefix `routeros_` indicates it's a variable defining a routeros configuration
   * variable ending with suffix `_interface_bridge` indicates it's a config option which applies to api/cli endpoint `/interface/bridge`
