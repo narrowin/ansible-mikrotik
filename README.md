@@ -70,7 +70,6 @@ The labs provided by this repo are:
 
 #### Start containerlab from the terminal
 ```bash
-# start the three node lab
 clab deploy -t containerlabs/s3n.clab.yml
 ```
 
@@ -115,7 +114,6 @@ Check this file to identify the IPs for all switches and how to connect to them.
 ### Backup config of mikrotik switches
 
 ```bash
-# three node setup
 ansible-playbook playbooks/mikrotik-backup-config.yml --limit mikrotik_s3n
 ```
 
@@ -124,7 +122,6 @@ Mikrotik config files will be stored in the ansible control host in `backups/` u
 ### Backup system files mikrotik switches
 
 ```bash
-# three node setup
 ansible-playbook playbooks/mikrotik-backup-system.yml --limit mikrotik_s3n
 ```
 
@@ -140,14 +137,12 @@ You have to install the packages defined in `requirements.txt` inside your venv 
 #### Ansible dry run and show diff
 
 ```bash
-# three node setup
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n --check --diff
 ```
 
 #### Push config
 
 ```bash
-# three node setup
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n
 ```
 
