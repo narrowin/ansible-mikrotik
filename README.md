@@ -32,7 +32,7 @@ For some quick impressions of using this repo with a mikrotik containerlab setup
 
 ## Requirements
 
-- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for ssh (Port: 22) and api-access (Port: 8728) or ssl-api (Port: 8729).
+- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for SSH (Port: 22) and API-access (Port: 8728) or SSL-API (Port: 8729).
 
 ---
 
@@ -40,11 +40,11 @@ For some quick impressions of using this repo with a mikrotik containerlab setup
 
 To run completely in your browser use [codespaces](https://docs.github.com/en/codespaces)
 
-**Be patient while the environment is spinnung up for the first time since it needs to pull some MBytes of containers for the system to be up and running (2-5 Minutes)**
+**Be patient while the environment is spinning up for the first time since it needs to pull some MegaBytes of containers for the system to be up and running (2-5 Minutes).**
 
 To run locally without any need for software installation using [devpods](https://devpod.sh). 
 
-**WARNING for Apple Silicon users (ARM based MACs) also wanting to try the lab: The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based MACs. You should use github codespaces instead for now!**
+**NOTE for Apple Silicon users** (ARM based Macs): The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based Macs. You should use github codespaces instead for now.
 
 
 ### Local installation
@@ -57,7 +57,7 @@ source venv/bin/activate
 (venv) $> ansible-galaxy collection install -r requirements.yml -p collections/
 ```
 
-To install contgainerlab for testing the playbooks follow: [containerlab docs](https://containerlab.dev/quickstart/)
+To install containerlab for testing the playbooks follow: [containerlab docs](https://containerlab.dev/quickstart/)
 
 ## Running and testing the playbooks
 
@@ -96,7 +96,7 @@ Great videos by [Roman Dodin](https://github.com/hellt):
 - **mikrotik_user:** Username for authentication.
 - **mikrotik_password:** Password for authentication.
 - **local_backups_top_folder:** Path to local backup folder on the ansible control host
-- **Additional Settings:** Customize dns, ntp, snmp and otgher configurations according to your environment.
+- **Additional Settings:** Customize dns, ntp, snmp and other configurations according to your environment.
 
 All [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
 Check this file to identify the IPs for all switches and how to connect to them.
@@ -131,7 +131,7 @@ Mikrotik system files will be stored in the ansible control host in `playbook-ne
 
 ### mikrotik file transfers
 
-Be aware that ansible-pyblibssh won't work to transfer files from/to the mikrotik devices using ansible module `ansible.netcommon.net_get`.
+Be aware that ansible-pylibssh won't work to transfer files from/to the mikrotik devices using ansible module `ansible.netcommon.net_get`.
 You have to install the packages defined in `requirements.txt` inside your venv (paramiko + scp)
 
 ### Full device configuration
@@ -152,7 +152,7 @@ run the playbook twice and see the wonders of idempotency (:
 
 #### Push only specific parts/tags
 
-E.g.: bridge_ports in [playbook/mirotik-configure.yml](playbook/mirotik-configure.yml)
+E.g.: bridge_ports in [playbook/mikrotik-configure.yml](playbook/mikrotik-configure.yml)
 
 ```bash
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge_ports
@@ -248,7 +248,7 @@ Contributions to ansible-mikrotik are welcome! Please follow these guidelines:
 
 ## License
 
-This project is licensed under the [Apachae License 2.0](LICENSE)
+This project is licensed under the [Apache License 2.0](LICENSE)
 
 ---
 
@@ -261,7 +261,7 @@ The initial effort and development is a collaboration between [narrowin.ch](http
 ## Additional Resources
 
 - [Ansible Documentation](https://docs.ansible.com/)
-- [Ansible RouerOS collection](https://docs.ansible.com/ansible/latest/collections/community/routeros/index.html)
+- [Ansible RouterOS collection](https://docs.ansible.com/ansible/latest/collections/community/routeros/index.html)
 - [Mikrotik RouterOS Documentation](https://help.mikrotik.com/docs/)
 - [Containerlab](https://containerlab.dev/)
 
@@ -277,7 +277,7 @@ Use ssh-keys for authentication for login on the network devices.
 
 - private ssh key used for authentication should be located e.g. in `~/.ssh/id_rsa` # configure in mikrotik group_vars
 
-- Use ansible-vault to provide login- and API-credentials. This addition helps in daily operations to keep the credentials in a securere standard place.
+- Use ansible-vault to provide login- and API-credentials. This addition helps in daily operations to keep the credentials in a secure place.
 
 - ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
 
