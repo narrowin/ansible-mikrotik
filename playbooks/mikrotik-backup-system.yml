@@ -9,9 +9,9 @@
 
     - name: Create backups folder in the ansible control host
       ansible.builtin.file:
-        path: "{{ local_backups_top_folder }}/inventory_hostname }}"
+        path: "{{ local_backups_top_folder }}/{{ inventory_hostname }}"
         state: directory
-        mode: '700'
+        mode: '0700'
       delegate_to: localhost
       become: false
 
@@ -23,7 +23,7 @@
     - name: "Copy ROS system backup to ansible control host"
       ansible.netcommon.net_get:
         src: "{{ inventory_hostname }}.backup"
-        dest: "{{ local_backups_top_folder }}/inventory_hostname }}/{{ inventory_hostname }}.system.backup"
+        dest: "{{ local_backups_top_folder }}/{{ inventory_hostname }}/{{ inventory_hostname }}.system.backup"
 
     - name: "Remove the backup file from memory"
       community.routeros.command:
