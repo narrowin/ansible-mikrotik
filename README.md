@@ -3,14 +3,14 @@
 [![Discord][discord-svg]][discord-url] [![DevPod][devpod-svg]][devpod-url] [![Codespaces][codespaces-svg]][codespaces-url]  
 ![w212][w212][Learn more](https://containerlab.dev/macos/#devpod)![w90][w90][Learn more](https://containerlab.dev/manual/codespaces)
 
-[discord-svg]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/join-discord-btn.svg
+[discord-svg]: https://github.com/user-attachments/assets/8f3f9813-fb61-4673-b666-5bb8dd902c05
 [discord-url]: https://discord.gg/6pbRj546gr
-[devpod-svg]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/open-in-devpod-btn.svg
+[devpod-svg]: https://github.com/user-attachments/assets/6c09e524-850f-468d-b6d8-b2d65112b609
 [devpod-url]: https://devpod.sh/open#https://github.com/narrowin/ansible-mikrotik
-[codespaces-svg]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/run-codespaces-btn.svg
+[codespaces-svg]: https://github.com/user-attachments/assets/95df8a45-cf92-4ce4-91dd-2142a04d28a3
 [codespaces-url]: https://codespaces.new/narrowin/ansible-mikrotik?quickstart=1&devcontainer_path=.devcontainer%2Fdevcontainer.json
-[w212]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/w212h1.svg
-[w90]: https://raw.githubusercontent.com/narrowin/ansible-mikrotik/main/images/w90h1.svg
+[w212]: https://github.com/user-attachments/assets/7bd9ab55-dee2-436d-9a36-6cef335921e1
+[w90]: https://github.com/user-attachments/assets/f955fb52-9ae6-4b4d-9b06-63b8d44769d4
 
 ## Automating Mikrotik Device Configuration with Ansible
 
