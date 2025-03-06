@@ -137,7 +137,6 @@ You have to install the packages defined in `requirements.txt` inside your venv 
 ```bash
 # three node setup
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n --check --diff
-
 ```
 
 #### Push config
@@ -154,12 +153,23 @@ run the playbook twice and see the wonders of idempotency (:
 E.g.: bridge_ports in [playbook/mirotik-configure.yml](playbook/mirotik-configure.yml)
 
 ```bash
-ansible-playbook playbooks/mikrotik-configure.yml --limit clab-simple-n1 -t bridge_ports 
+ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge_ports
 ```
 
-three node setup
+---
+
+## Login to Lab devices
+
+Switches - User: admin - Password: multi00l
+
 ```bash
-ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge_ports
+ssh admin@clab
+```
+
+Linux clients - User: user Password: multi00l
+
+```bash
+ssh user@clab-s3n-linux1 
 ```
 
 ---
@@ -171,6 +181,9 @@ ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge
 ```bash
 # all groups
 ansible -m debug -a var="hostvars[inventory_hostname]['group_names']" sw-mkt-cluster-05
+```
+
+```bash
 # all vars
 ansible -m debug -a "var=vars" clab-simple-n1
 ```
