@@ -152,7 +152,7 @@ run the playbook twice and see the wonders of idempotency (:
 
 #### Push only specific parts/tags
 
-E.g.: bridge_ports in [playbook/mirotik-configure.yml](playbook/mirotik-configure.yml)
+E.g.: bridge_ports in [playbook/mikrotik-configure.yml](playbook/mikrotik-configure.yml)
 
 ```bash
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge_ports
