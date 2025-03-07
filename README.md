@@ -14,9 +14,16 @@
 
 ## Automating MikroTik Device Configuration with Ansible
 
-ansible-mikrotik enables network engineers to automate the configuration and management of [MikroTik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments.
+ansible-mikrotik enables network engineers to automate the configuration and management of [MikroTik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments. 
 
-Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live demonstration of this repository's capabilities for MikroTik device management and lab environments.
+If you want to test this in a lab environment with virtualized MikroTik devices, you can use containerlab environment we have prepared.
+
+![mikrotik-ansible-workflow](https://github.com/user-attachments/assets/8479c7cd-35d2-4084-8848-c2895449d06f)
+
+
+## Example of a network configured with mikrotik-ansible
+
+Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live demonstration of this repository's capabilities for MikroTik device management and lab environments. This network is fully virtualized and configured with ansible. 
 
 ![image](https://github.com/user-attachments/assets/48df496d-afaf-4586-9f40-48a362394852)
 
@@ -36,8 +43,7 @@ Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live d
 ## Table of Contents
 - [Setup and Deployment](#setup-and-deployment)
 - [Running the Ansible Playbooks](#running-and-testing-the-ansible-playbooks)
-- [Configuration for MikroTik Devices](#configuration-when-running-against-other-mikrotik-devices)
-- [Lab Environment](#running-in-the-lab)
+- [Lab Environment](#lab-environment)
 - [Troubleshooting](#ansible-debugging)
 - [Known Issues](#caveats)
 - [Contributing](#contributing)
@@ -266,9 +272,7 @@ ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge
 
 ---
 
-## Running in the Lab
-
-## Lab setup
+## Lab Environment
 
 If you want to test the playbooks using the labs we have prepared at: [containerlabs](containerlabs/) you have two options:
 
