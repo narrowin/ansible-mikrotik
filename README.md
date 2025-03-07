@@ -16,7 +16,10 @@
 
 ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, the provided playbooks simplify network operations significanlty, minimize manual errors, and streamline deployment in dynamic network environments.
 
-For some first impressions of using this repo with [Mikrotik CHR](https://help.mikrotik.com/docs/spaces/ROS/pages/18350234/Cloud+Hosted+Router+CHR) running in a virtualized environment with [containerlab](https://containerlab.dev/) check out the [narrowin demo controller](https://demo.narrowin.ch/).
+Check out the [narrowin demo controller](https://demo.narrowin.ch/) to see the results of all possibilies offered in this repo in terms of mikrotik device managemant and lab setups.
+
+![image](https://github.com/user-attachments/assets/48df496d-afaf-4586-9f40-48a362394852)
+
 
 ---
 
