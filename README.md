@@ -14,9 +14,9 @@
 
 ## Automating Mikrotik Device Configuration with Ansible
 
-ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, this role simplifies network operations, minimizes manual errors, and streamlines deployment in dynamic network environments.
+ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, the provided playbooks simplify network operations significanlty, minimize manual errors, and streamline deployment in dynamic network environments.
 
-For some quick impressions of using this repo with a mikrotik containerlab setup check out the [narrowin demo controller](https://demo.narrowin.ch/).
+For some first impressions of using this repo with [Mikrotik CHR](https://help.mikrotik.com/docs/spaces/ROS/pages/18350234/Cloud+Hosted+Router+CHR) running in a virtualized environment with [containerlab](https://containerlab.dev/) check out the [narrowin demo controller](https://demo.narrowin.ch/).
 
 ---
 
@@ -36,39 +36,73 @@ For some quick impressions of using this repo with a mikrotik containerlab setup
 
 ---
 
-## Setup
+## Setup and Deployment
 
-To run completely in your browser use [codespaces](https://docs.github.com/en/codespaces)
+### Ansible
 
-**Be patient while the environment is spinning up for the first time since it needs to pull some MegaBytes of containers for the system to be up and running (2-5 Minutes).**
+The provided playbooks depend on specific Python versions and required packages (see [requirements.txt](requirements.txt)), as well as necessary Ansible collections (see [requirements.yml](requirements.yml)). If you already have a working Ansible setup, feel free to test them—they might just work. Otherwise, review the requirements.
 
-To run locally without any need for software installation using [devpods](https://devpod.sh). 
+We provide some examples on how to use these playbooks to fully configure and backup Mikrotik devices. The following sections describe the files that provide this magic.
 
-**NOTE for Apple Silicon users** (ARM based Macs): The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based Macs. You should use github codespaces instead for now.
+#### Group Vars 
+- [inventory/mikrotik](inventory/mikrotik)
+
+- [inventory/group_vars/all.yml](inventory/group_vars/all.yml)
+
+- [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/)
+- [inventory/group_vars/mikrotik_chr_12_ports_containerlab/](inventory/group_vars/mikrotik_chr_12_ports_containerlab/)
 
 
-### Local installation
+Special folders:
+- [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/)
+- []()
+- []()
+- []()
+
+#### Local installation
+
+For a self-contained setup withing this repo and all needed components ready use these commands:
 
 ```bash
 git clone https://github.com/narrowin/ansible-mikrotik.git
 python3 -m venv venv
 source venv/bin/activate
-(venv) $> pip install -r requirements.txt
-(venv) $> ansible-galaxy collection install -r requirements.yml -p collections/
+pip install -r requirements.txt
+ansible-galaxy collection install -r requirements.yml -p collections/
 ```
+ 
+You are now ready to run the playbooks. Go to section [Running and testing the ansible playbooks](#running-and-testing-the-ansible-playbooks)
 
-To install containerlab for testing the playbooks follow: [containerlab docs](https://containerlab.dev/quickstart/)
+#### Dockerized options
+
+For both options below please: **be patient while the environment is spinning up for the first time since it needs to pull some MegaBytes of containers for the system to be up and running (2-5 Minutes).**
+
+
+- run completely in your browser with [codespaces](https://docs.github.com/en/codespaces)
+  Hit the codespaces button on the top of this page and off you go.
+
+- run locally in fully provided docker environment using [devpods](https://devpod.sh) or [devcontainers](https://code.visualstudio.com/docs/devcontainers/containers). 
+
+  **NOTE for Apple Silicon users** (ARM based Macs): The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based Macs. You should use github codespaces instead for now.
+
+
+### Running the playbooks with a lab
+
+If you want to test the playbooks using the labs we have prepared at: [containerlabs](containerlabs/) you can again have two options:
+
+- install containerlab on your machine. For this please follow: [containerlab docs](https://containerlab.dev/quickstart/) this guide
+- use one of the provided docker envs described in [Dockerized options](#dockerized-options). These contain a full installation of containerlab as well as the vs-code containerlab extension
 
 ## Running and testing the playbooks
 
 ### Quick start options with containerlab
 
-Spin up labs in the [containerlabs](containerlabs) folder to test ansible playbooks with no local software dependencies - fully self-contained environment with a lab topology, ansible and this repo installed. All batteries included!
-
 The labs provided by this repo are:
 
-- [three Mikrotik nodes and two Linux clients](containerlabs/simple.clab.yml)
-- [single Mikrotik node to test with](containerlabs/simple.clab.yml) - to run this with ansible you need to enable the clab-simple-n1 definition in [inventory/mikrotik](inventory/mikrotik)
+- [three Mikrotik nodes](containerlabs/simple.clab.yml) interconnected and two Linux clients attached
+- [single Mikrotik node](containerlabs/simple.clab.yml) a basic singe node lab to test your playbooks without any lab complexities
+
+You can spin up both labs simultaniously if you like to play around with both.
 
 #### Start containerlab from the terminal
 ```bash
