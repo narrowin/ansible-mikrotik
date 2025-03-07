@@ -404,7 +404,7 @@ The initial effort and development is a collaboration between [narrowin.ch](http
 - [Mikrotik RouterOS Documentation](https://help.mikrotik.com/docs/)
 - [Containerlab](https://containerlab.dev/)
 
-### More information on containerlab and devpod, codespaces and the VS-code extension
+### Containerlab, devpod, codespaces and VS-code extension
 
 Great videos by [Roman Dodin](https://github.com/hellt):
 
