@@ -35,7 +35,7 @@ Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live d
 
 ## Table of Contents
 - [Setup and Deployment](#setup-and-deployment)
-- [Running the Playbooks](#running-and-testing-the-ansible-playbooks)
+- [Running the Ansible Playbooks](#running-and-testing-the-ansible-playbooks)
 - [Configuration for MikroTik Devices](#configuration-when-running-against-other-mikrotik-devices)
 - [Lab Environment](#running-in-the-lab)
 - [Troubleshooting](#ansible-debugging)
@@ -113,7 +113,7 @@ The group variables directory contains several important configuration files:
 
 
 ##### Global group_vars for all devices 
-[Key configuration options](group_vars/all.yml) include:
+[Key configuration options](inventory/group_vars/all.yml) include:
 
 - **mikrotik_user:** Username for authentication.
 - **mikrotik_password:** Password for authentication.
@@ -202,7 +202,7 @@ In file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml] you can fin
 
 First generate the required SSL certs executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
 
-Once you have the certs you can upload them to the devices and enable the API executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
+Once you have the certs you can upload them to the devices and enable the API executing `ansible-playbook playbooks/mikrotik-configure-ssl-api.yml`
 
 ### Authentication with ssh-key and ansible-vault
 
@@ -225,7 +225,7 @@ Use ssh-keys for authentication for login on the network devices.
 ansible-playbook playbooks/mikrotik-backup-config.yml --limit mikrotik_s3n
 ```
 
-Mikrotik config files will be stored in the ansible control host in `backups/` unless reconfigured in [group_vars/all.yml](group_vars/all.yml)
+MikroTik config files will be stored in the ansible control host in `backups/` unless reconfigured in [inventory/group_vars/all.yml](inventory/group_vars/all.yml)
 
 ### Backup system files mikrotik switches
 
@@ -233,7 +233,7 @@ Mikrotik config files will be stored in the ansible control host in `backups/` u
 ansible-playbook playbooks/mikrotik-backup-system.yml --limit mikrotik_s3n
 ```
 
-Mikrotik system files will be stored in the ansible control host in `playbook-network-switches/backups/`
+MikroTik system files will be stored in the ansible control host in `backups/`
 
 ### mikrotik file transfers
 
@@ -258,7 +258,7 @@ run the playbook twice and see the wonders of idempotency (:
 
 #### Push only specific parts/tags
 
-E.g.: bridge_ports in [playbook/mikrotik-configure.yml](playbook/mikrotik-configure.yml)
+E.g.: bridge_ports in [playbooks/mikrotik-configure.yml](playbooks/mikrotik-configure.yml)
 
 ```bash
 ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge_ports
