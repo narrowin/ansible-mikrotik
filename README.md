@@ -106,7 +106,7 @@ The group variables directory contains several important configuration files:
 | [inventory/group_vars/all.yml](inventory/group_vars/all.yml) | Global variables applied to all devices |
 |No need to edit||
 | [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/) | RouterOS-specific settings for all MikroTik devices |
-| [inventory/group_vars/mikrotik_chr_12_ports_containerlab/](inventory/group_vars/mikrotik_chr_12_ports_containerlab/) | Settings specific to virtualized RouterOS instances with 12 ports |
+| [inventory/group_vars/mikrotik_chr_12ports_containerlab/](inventory/group_vars/mikrotik_chr_12ports_containerlab/) | Settings specific to virtualized RouterOS instances with 12 ports |
 |Only edit if you know what you are doing||
 | [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/) | Configuration files specific to MikroTik switching hardware |
 | [inventory/group_vars/mikrotik_routers/](inventory/group_vars/mikrotik_routers/) | WIP to come: Configuration files specific to MikroTik routing hardware |
