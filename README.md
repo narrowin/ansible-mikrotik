@@ -16,7 +16,7 @@
 
 ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments.
 
-Check out the [narrowin demo controller](https://demo.narrowin.ch/) to see the results of all possibilities offered in this repo in terms of mikrotik device management and lab setups.
+Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live demonstration of this repository's capabilities for Mikrotik device management and lab environments.
 
 ![image](https://github.com/user-attachments/assets/48df496d-afaf-4586-9f40-48a362394852)
 
@@ -33,36 +33,31 @@ Check out the [narrowin demo controller](https://demo.narrowin.ch/) to see the r
 
 ---
 
-## Requirements
-
-- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for SSH (Port: 22) and API-access (Port: 8728) or SSL-API (Port: 8729).
-
----
-
 ## Table of Contents
 - [Setup and Deployment](#setup-and-deployment)
-- [Running the playbooks](#running-the-playbooks)
-- [Configuration when running against other Mikrotik devices](#configuration-when-running-against-other-mikrotik-devices)
-- [Running and testing the ansible playbooks](#running-and-testing-the-ansible-playbooks)
-- [Login to Lab devices](#login-to-lab-devices)
-- [Ansible Debugging](#ansible-debugging)
-- [Caveats](#caveats)
+- [Running the Playbooks](#running-the-playbooks)
+- [Configuration for Mikrotik Devices](#configuration-when-running-against-other-mikrotik-devices)
+- [Testing Ansible Playbooks](#running-and-testing-the-ansible-playbooks)
+- [Lab Device Access](#login-to-lab-devices)
+- [Troubleshooting](#ansible-debugging)
+- [Known Issues](#caveats)
 - [Contributing](#contributing)
 - [License](#license)
 - [About](#about)
-- [Additional Resources](#additional-resources)
+- [Resources](#additional-resources)
 
 ---
 
-## Setup and Deployment
 
-### Ansible
+## Ansible
 
-The provided playbooks depend on specific Python versions and required packages (see [requirements.txt](requirements.txt)), as well as necessary Ansible collections (see [requirements.yml](requirements.yml)). If you already have a working Ansible setup, feel free to test them—they might just work. Otherwise, review the requirements.
+The provided playbooks depend on specific Python versions and packages (see [requirements.txt](requirements.txt)) and Ansible collections (see [requirements.yml](requirements.yml)). If you have an existing Ansible setup, try your current environment first—it might work without modifications. Otherwise, follow the installation instructions below.
+
+### Setup and Deployment
 
 #### Local installation
 
-For a self-contained setup within this repo and all needed components ready use these commands:
+For a self-contained setup within this repo so that you can run the playbooks use:
 
 ```bash
 git clone https://github.com/narrowin/ansible-mikrotik.git
@@ -86,11 +81,12 @@ For both options below please: **be patient while the environment is spinning up
 
   **NOTE for Apple Silicon users** (ARM based Macs): The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based Macs. You should use github codespaces instead for now.
 
-### Ansible environment
+### Ansible setup
 
 We provide some examples on how to use these playbooks to fully configure and backup Mikrotik devices. The following sections describe the files that provide this magic.
 
-
+All [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
+Check this file to identify the IPs for all switches and how to connect to them.
 
 #### Ansible Group Variables Structure
 
@@ -107,6 +103,16 @@ The group variables directory contains several important configuration files:
 |Only edit if you know what you are doing||
 | [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/) | Configuration files specific to Mikrotik switching hardware |
 | [inventory/group_vars/mikrotik_routers/](inventory/group_vars/mikrotik_routers/) | WIP to come: Configuration files specific to Mikrotik routing hardware |
+
+
+##### Global group_vars for all devices 
+[Key configuration options](group_vars/all.yml) include:
+
+- **mikrotik_user:** Username for authentication.
+- **mikrotik_password:** Password for authentication.
+- **local_backups_top_folder:** Path to local backup folder on the ansible control host
+- **Additional Settings:** Customize dns, ntp, snmp and other configurations according to your environment.
+
 
 #### Ansible Host Variables Structure
 
@@ -136,7 +142,6 @@ When troubleshooting, always check both host_vars and group_vars to understand t
 
 #### Playbooks
 
-
 Here's a reference to all available playbooks:
 
 | Playbook | Description |
@@ -157,74 +162,27 @@ Here's a reference to all available playbooks:
 |More to come for routers and firewalls|...|
 
 
-### Setting up a lab for testing
+##### Network Requirements for the playbooks
 
-If you want to test the playbooks using the labs we have prepared at: [containerlabs](containerlabs/) you can again have two options:
-
-- install containerlab on your machine. For this please follow: [containerlab docs](https://containerlab.dev/quickstart/) this guide
-- use one of the provided docker envs described in [Dockerized options](#dockerized-options). These contain a full installation of containerlab as well as the vs-code containerlab extension
-
-## Running the playbooks
-
-### Quick start options with containerlab
-
-The labs provided by this repo are:
-
-- [three Mikrotik nodes](containerlabs/simple.clab.yml) interconnected and two Linux clients attached
-- [single Mikrotik node](containerlabs/simple.clab.yml) a basic single node lab to test your playbooks without any lab complexities
-
-You can spin up both labs simultaneously if you like to play around with both.
-
-#### Start containerlab from the terminal
-```bash
-clab deploy -t containerlabs/s3n.clab.yml
-```
-
-#### Start containerlab from the [VS-Code extension](https://containerlab.dev/manual/vsc-extension/)
-
-Navigate on the left to containerlab. Right click on the lab you want to start and choose `Deploy`
-
-
-### More information on containerlab and devpod, codespaces and the VS-code extension
-
-Great videos by [Roman Dodin](https://github.com/hellt):
-
-
-- [VS Code extension for Containerlab](https://www.youtube.com/watch?v=NIw1PbfCyQ4)
-- [Containerlab and DevPod](https://www.youtube.com/watch?v=ceDrFx2K3jE)
-- [Running Containerlab on macOS and Windows with Devcontainers](https://www.youtube.com/watch?v=Xue1pLiO0qQ)
-
-## Configuration when running against other Mikrotik devices
-
-[Key configuration options](group_vars/all.yml) include:
-
-- **mikrotik_user:** Username for authentication.
-- **mikrotik_password:** Password for authentication.
-- **local_backups_top_folder:** Path to local backup folder on the ansible control host
-- **Additional Settings:** Customize dns, ntp, snmp and other configurations according to your environment.
-
-All [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
-Check this file to identify the IPs for all switches and how to connect to them.
-
-*Connecting Requirements:*  
+- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for SSH (Port: 22) and API-access (Port: 8728) or SSL-API (Port: 8729).
 
 ```console
-[Ansible Playbook] --> [Mikrotik RouterOS API]
-[Ansible Playbook] --> [Mikrotik RouterOS SSL-API]
-[Ansible Playbook] --> [Mikrotik RouterOS SSH] # some playbooks directly connect via ssh/scp
+[Ansible Playbook] --> [Mikrotik RouterOS API:8728]
+[Ansible Playbook] --> [Mikrotik RouterOS SSL-API:8729]
+[Ansible Playbook] --> [Mikrotik RouterOS SSH:22] # some playbooks directly connect via ssh/scp
 ```
 
-### Naming convention for inventory files and variables
+#### Naming convention for inventory files and variables
 
 Every device configuration option must be defined in the under [inventory/group_vars](inventory/group_vars) or [inventory/host_vars](inventory/host_vars).
 
-#### Naming convention for inventory file names
+##### Naming convention for inventory file names
 
 It's recommended to split the configuration variables in multiple files. The file name convention is to align the file name in the inventory with the api/cli endpoint to which the config is applied e.g.
 
 file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml](inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml) defines the configuration for api/cli endpoint `/interface/bridge`
 
-#### Naming convention for inventory var names
+##### Naming convention for inventory var names
 
 Every variable must start with prefix `routeros_` and then the api/cli endpoint where the config applies e.g. `routeros_interface_bridge`
 
@@ -232,6 +190,23 @@ In file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml] you can fin
 
   * variable starting with prefix `routeros_` indicates it's a variable defining a routeros configuration
   * variable ending with suffix `_interface_bridge` indicates it's a config option which applies to api/cli endpoint `/interface/bridge`
+
+### How to enable API with SSL in mikrotik devices
+
+First generate the required SSL certs executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
+
+Once you have the certs you can upload them to the devices and enable the API executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
+
+### Authentication with ssh-key and ansible-vault
+
+Use ssh-keys for authentication for login on the network devices.
+
+- private ssh key used for authentication should be located e.g. in `~/.ssh/id_rsa` # configure in mikrotik group_vars
+
+- Use ansible-vault to provide login- and API-credentials. This addition helps in daily operations to keep the credentials in a secure place.
+
+- ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
+
 
 ---
 
@@ -284,12 +259,46 @@ ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n -t bridge
 
 ---
 
+## Running in the Lab
+
+## Lab setup
+
+If you want to test the playbooks using the labs we have prepared at: [containerlabs](containerlabs/) you have two options:
+
+- install containerlab on your machine. For this please follow: [containerlab docs](https://containerlab.dev/quickstart/) this guide
+- use one of the provided docker envs described in [Dockerized options](#dockerized-options). These contain a full installation of containerlab as well as the vs-code containerlab extension
+
+### Quick start options with containerlab
+
+The labs provided by this repo are:
+
+- [three Mikrotik nodes](containerlabs/simple.clab.yml) interconnected and two Linux clients attached
+- [single Mikrotik node](containerlabs/simple.clab.yml) a basic single node lab to test your playbooks without any lab complexities
+
+### Lab Credentials
+
+```
+Mikrotik CHRs: 
+  User: admin Password: admin
+Linux machines: 
+  User: user Password: multi00l
+```
+
+#### Start containerlab from the terminal
+```bash
+clab deploy -t containerlabs/s3n.clab.yml
+```
+
+#### Start containerlab from the [VS-Code extension](https://containerlab.dev/manual/vsc-extension/)
+
+Navigate on the left to containerlab. Right click on the lab you want to start and choose `Deploy`
+
+
 ## Login to Lab devices
 
-Switches - User: admin - Password: multi00l
 
 ```bash
-ssh admin@clab
+ssh admin@clab-s3n-sw-acct1
 ```
 
 Linux clients - User: user Password: multi00l
@@ -388,21 +397,14 @@ The initial effort and development is a collaboration between [narrowin.ch](http
 - [Mikrotik RouterOS Documentation](https://help.mikrotik.com/docs/)
 - [Containerlab](https://containerlab.dev/)
 
-### How to enable API with SSL in mikrotik devices
+### More information on containerlab and devpod, codespaces and the VS-code extension
 
-First generate the required SSL certs executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
+Great videos by [Roman Dodin](https://github.com/hellt):
 
-Once you have the certs you can upload them to the devices and enable the API executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
 
-### Authentication with ssh-key and ansible-vault
-
-Use ssh-keys for authentication for login on the network devices.
-
-- private ssh key used for authentication should be located e.g. in `~/.ssh/id_rsa` # configure in mikrotik group_vars
-
-- Use ansible-vault to provide login- and API-credentials. This addition helps in daily operations to keep the credentials in a secure place.
-
-- ansible vault password should be stored in a text file in `playbook-network-switches/.vault.pass`
+- [VS Code extension for Containerlab](https://www.youtube.com/watch?v=NIw1PbfCyQ4)
+- [Containerlab and DevPod](https://www.youtube.com/watch?v=ceDrFx2K3jE)
+- [Running Containerlab on macOS and Windows with Devcontainers](https://www.youtube.com/watch?v=Xue1pLiO0qQ)
 
 ---
 
