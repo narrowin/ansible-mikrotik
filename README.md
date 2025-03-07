@@ -12,11 +12,11 @@
 [w212]: https://github.com/user-attachments/assets/7bd9ab55-dee2-436d-9a36-6cef335921e1
 [w90]: https://github.com/user-attachments/assets/f955fb52-9ae6-4b4d-9b06-63b8d44769d4
 
-## Automating Mikrotik Device Configuration with Ansible
+## Automating MikroTik Device Configuration with Ansible
 
-ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments.
+ansible-mikrotik enables network engineers to automate the configuration and management of [MikroTik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments.
 
-Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live demonstration of this repository's capabilities for Mikrotik device management and lab environments.
+Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live demonstration of this repository's capabilities for MikroTik device management and lab environments.
 
 ![image](https://github.com/user-attachments/assets/48df496d-afaf-4586-9f40-48a362394852)
 
@@ -25,7 +25,7 @@ Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live d
 
 ## Features
 
-- **Automated Configuration:** Quickly deploy and update Mikrotik device settings including interfaces, routing, firewall rules, and VPN configurations.
+- **Automated Configuration:** Quickly deploy and update MikroTik device settings including interfaces, routing, firewall rules, and VPN configurations.
 - **Idempotence:** Ensure configurations are applied consistently without unintended changes.
 - **Customizable Variables:** Easily override defaults to suit your configuration requirements.
 - **Modular Design:** Clean separation between tasks, defaults, and configuration files for easy maintenance and extension.
@@ -35,55 +35,62 @@ Check out the [narrowin demo controller](https://demo.narrowin.ch/) for a live d
 
 ## Table of Contents
 - [Setup and Deployment](#setup-and-deployment)
-- [Running the Playbooks](#running-the-playbooks)
-- [Configuration for Mikrotik Devices](#configuration-when-running-against-other-mikrotik-devices)
-- [Testing Ansible Playbooks](#running-and-testing-the-ansible-playbooks)
-- [Lab Device Access](#login-to-lab-devices)
+- [Running the Playbooks](#running-and-testing-the-ansible-playbooks)
+- [Configuration for MikroTik Devices](#configuration-when-running-against-other-mikrotik-devices)
+- [Lab Environment](#running-in-the-lab)
 - [Troubleshooting](#ansible-debugging)
 - [Known Issues](#caveats)
 - [Contributing](#contributing)
 - [License](#license)
 - [About](#about)
-- [Resources](#additional-resources)
+- [Additional Resources](#additional-resources)
 
 ---
 
+## Setup and Deployment
 
-## Ansible
+### Ansible
 
 The provided playbooks depend on specific Python versions and packages (see [requirements.txt](requirements.txt)) and Ansible collections (see [requirements.yml](requirements.yml)). If you have an existing Ansible setup, try your current environment first—it might work without modifications. Otherwise, follow the installation instructions below.
 
-### Setup and Deployment
+### Quick Start Guide
 
-#### Local installation
+1. Clone the repository and set up the environment:
+   ```bash
+   git clone https://github.com/narrowin/ansible-mikrotik.git
+   cd ansible-mikrotik
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ansible-galaxy collection install -r requirements.yml -p collections/
+   ```
 
-For a self-contained setup within this repo so that you can run the playbooks use:
+2. Deploy a test lab with containerlab:
+   ```bash
+   clab deploy -t containerlabs/s3n.clab.yml
+   ```
 
-```bash
-git clone https://github.com/narrowin/ansible-mikrotik.git
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-ansible-galaxy collection install -r requirements.yml -p collections/
+3. Run your first playbook:
+   ```bash
+   ansible-playbook playbooks/mikrotik-configure.yml --limit mikrotik_s3n
+   ```
+
+### Network Requirements
+
+- Ensure connectivity between your Ansible control node and the MikroTik devices for:
+  - SSH (Port: 22)
+  - API access (Port: 8728)
+  - SSL-API (Port: 8729)
+
+```console
+[Ansible Playbook] --> [MikroTik RouterOS API:8728]
+[Ansible Playbook] --> [MikroTik RouterOS SSL-API:8729]
+[Ansible Playbook] --> [MikroTik RouterOS SSH:22] # some playbooks directly connect via ssh/scp
 ```
- 
-You are now ready to run the playbooks. Go to section [Running and testing the ansible playbooks](#running-and-testing-the-ansible-playbooks)
-
-#### Dockerized options
-
-For both options below please: **be patient while the environment is spinning up for the first time since it needs to pull some MegaBytes of containers for the system to be up and running (2-5 Minutes).**
-
-
-- run completely in your browser with [codespaces](https://docs.github.com/en/codespaces)
-  Hit the codespaces button on the top of this page and off you go.
-
-- run locally in fully provided docker environment using [devpods](https://devpod.sh) or [devcontainers](https://code.visualstudio.com/docs/devcontainers/containers). 
-
-  **NOTE for Apple Silicon users** (ARM based Macs): The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based Macs. You should use github codespaces instead for now.
 
 ### Ansible setup
 
-We provide some examples on how to use these playbooks to fully configure and backup Mikrotik devices. The following sections describe the files that provide this magic.
+We provide some examples on how to use these playbooks to fully configure and backup MikroTik devices. The following sections describe the files that provide this magic.
 
 All [behavioral inventory parameters](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters) are defined in [inventory/mikrotik](inventory/mikrotik). 
 Check this file to identify the IPs for all switches and how to connect to them.
@@ -95,14 +102,14 @@ The group variables directory contains several important configuration files:
 | File/Directory | Description |
 |----------------|-------------|
 |Adjust to your setup||
-| [inventory/mikrotik/group_vars/mikrotik/](inventory/mikrotik/group_vars/mikrotik/) | Base configuration for all Mikrotik devices |
+| [inventory/mikrotik/group_vars/mikrotik/](inventory/mikrotik/group_vars/mikrotik/) | Base configuration for all MikroTik devices |
 | [inventory/group_vars/all.yml](inventory/group_vars/all.yml) | Global variables applied to all devices |
 |No need to edit||
-| [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/) | RouterOS-specific settings for all Mikrotik devices |
+| [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/) | RouterOS-specific settings for all MikroTik devices |
 | [inventory/group_vars/mikrotik_chr_12_ports_containerlab/](inventory/group_vars/mikrotik_chr_12_ports_containerlab/) | Settings specific to virtualized RouterOS instances with 12 ports |
 |Only edit if you know what you are doing||
-| [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/) | Configuration files specific to Mikrotik switching hardware |
-| [inventory/group_vars/mikrotik_routers/](inventory/group_vars/mikrotik_routers/) | WIP to come: Configuration files specific to Mikrotik routing hardware |
+| [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/) | Configuration files specific to MikroTik switching hardware |
+| [inventory/group_vars/mikrotik_routers/](inventory/group_vars/mikrotik_routers/) | WIP to come: Configuration files specific to MikroTik routing hardware |
 
 
 ##### Global group_vars for all devices 
@@ -148,14 +155,14 @@ Here's a reference to all available playbooks:
 |----------|-------------|
 | [playbooks/mikrotik-backup-config.yml](playbooks/mikrotik-backup-config.yml) | Backs up RouterOS configuration files (.rsc files)|
 | [playbooks/mikrotik-backup-system.yml](playbooks/mikrotik-backup-system.yml) | Backs up RouterOS system (.backup files)|
-| [playbooks/mikrotik-configure.yml](playbooks/mikrotik-configure.yml) | Deploys full configuration to Mikrotik devices |
+| [playbooks/mikrotik-configure.yml](playbooks/mikrotik-configure.yml) | Deploys full configuration to MikroTik devices |
 |SSL-API||
 | [playbooks/mikrotik-generate-ssl-certs.yml](playbooks/mikrotik-generate-ssl-certs.yml) | Generates SSL certificates for API access |
-| [playbooks/mikrotik-configure-ssl-api.yml](playbooks/mikrotik-configure-ssl-api.yml) | Configures SSL API access on Mikrotik devices |
+| [playbooks/mikrotik-configure-ssl-api.yml](playbooks/mikrotik-configure-ssl-api.yml) | Configures SSL API access on MikroTik devices |
 |Operations||
 | [playbooks/mikrotik-upgrade.yml](playbooks/mikrotik-upgrade.yml) | WIP: Upgrades RouterOS to specified version |
 | [playbooks/mikrotik-reset-config.yml](playbooks/mikrotik-reset-config.yml) | WIP: Factory resets device configuration |
-| [playbooks/mikrotik-reboot.yml](playbooks/mikrotik-reboot.yml) | Safely reboots Mikrotik devices |
+| [playbooks/mikrotik-reboot.yml](playbooks/mikrotik-reboot.yml) | Safely reboots MikroTik devices |
 | [playbooks/mikrotik-check-versions.yml](playbooks/mikrotik-check-versions.yml) | Retrieves and displays current RouterOS versions |
 |Facts gathering||
 | [playbooks/mikrotik-resources-usage.yml](playbooks/mikrotik-resources-usage.yml) | |
@@ -164,12 +171,12 @@ Here's a reference to all available playbooks:
 
 ##### Network Requirements for the playbooks
 
-- **Network Device Access:** Ensure connectivity between your Ansible control node and the Mikrotik devices for SSH (Port: 22) and API-access (Port: 8728) or SSL-API (Port: 8729).
+- **Network Device Access:** Ensure connectivity between your Ansible control node and the MikroTik devices for SSH (Port: 22) and API-access (Port: 8728) or SSL-API (Port: 8729).
 
 ```console
-[Ansible Playbook] --> [Mikrotik RouterOS API:8728]
-[Ansible Playbook] --> [Mikrotik RouterOS SSL-API:8729]
-[Ansible Playbook] --> [Mikrotik RouterOS SSH:22] # some playbooks directly connect via ssh/scp
+[Ansible Playbook] --> [MikroTik RouterOS API:8728]
+[Ansible Playbook] --> [MikroTik RouterOS SSL-API:8729]
+[Ansible Playbook] --> [MikroTik RouterOS SSH:22] # some playbooks directly connect via ssh/scp
 ```
 
 #### Naming convention for inventory files and variables
