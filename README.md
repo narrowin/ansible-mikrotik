@@ -14,9 +14,9 @@
 
 ## Automating Mikrotik Device Configuration with Ansible
 
-ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible’s idempotent execution model, the provided playbooks simplify network operations significanlty, minimize manual errors, and streamline deployment in dynamic network environments.
+ansible-mikrotik enables network engineers to automate the configuration and management of [Mikrotik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments.
 
-Check out the [narrowin demo controller](https://demo.narrowin.ch/) to see the results of all possibilies offered in this repo in terms of mikrotik device managemant and lab setups.
+Check out the [narrowin demo controller](https://demo.narrowin.ch/) to see the results of all possibilities offered in this repo in terms of mikrotik device management and lab setups.
 
 ![image](https://github.com/user-attachments/assets/48df496d-afaf-4586-9f40-48a362394852)
 
@@ -62,7 +62,7 @@ The provided playbooks depend on specific Python versions and required packages 
 
 #### Local installation
 
-For a self-contained setup withing this repo and all needed components ready use these commands:
+For a self-contained setup within this repo and all needed components ready use these commands:
 
 ```bash
 git clone https://github.com/narrowin/ansible-mikrotik.git
@@ -125,7 +125,7 @@ This allows you to:
 - Override only what's necessary for specific devices
 - Maintain a clean, DRY (Don't Repeat Yourself) configuration structure
 
-When troubleshooting, always check both host_vars and group_vars to understand the final applied configuration. Have a look at the [Ansible degugging section](#ansible-debugging)
+When troubleshooting, always check both host_vars and group_vars to understand the final applied configuration. Have a look at the [Ansible debugging section](#ansible-debugging)
 
 | File/Directory | Description |
 |----------------|-------------|
@@ -141,19 +141,19 @@ Here's a reference to all available playbooks:
 
 | Playbook | Description |
 |----------|-------------|
-| [playblooks/mikrotik-backup-config.yml](playbooks/mikrotik-backup-config.yml) | Backs up RouterOS configuration files (.rsc files)|
-| [playblooks/mikrotik-backup-system.yml](playbooks/mikrotik-backup-system.yml) | Backs up RouterOS system (.backup files)|
-| [playblooks/mikrotik-configure.yml](playbooks/mikrotik-configure.yml) | Deploys full configuration to Mikrotik devices |
+| [playbooks/mikrotik-backup-config.yml](playbooks/mikrotik-backup-config.yml) | Backs up RouterOS configuration files (.rsc files)|
+| [playbooks/mikrotik-backup-system.yml](playbooks/mikrotik-backup-system.yml) | Backs up RouterOS system (.backup files)|
+| [playbooks/mikrotik-configure.yml](playbooks/mikrotik-configure.yml) | Deploys full configuration to Mikrotik devices |
 |SSL-API||
-| [playblooks/mikrotik-generate-ssl-certs.yml](playbooks/mikrotik-generate-ssl-certs.yml) | Generates SSL certificates for API access |
-| [playblooks/mikrotik-configure-ssl-api.yml](playbooks/mikrotik-configure-ssl-api.yml) | Configures SSL API access on Mikrotik devices |
+| [playbooks/mikrotik-generate-ssl-certs.yml](playbooks/mikrotik-generate-ssl-certs.yml) | Generates SSL certificates for API access |
+| [playbooks/mikrotik-configure-ssl-api.yml](playbooks/mikrotik-configure-ssl-api.yml) | Configures SSL API access on Mikrotik devices |
 |Operations||
-| [playblooks/mikrotik-upgrade.yml](playbooks/mikrotik-upgrade.yml) | WIP: Upgrades RouterOS to specified version |
-| [playblooks/mikrotik-reset-config.yml](playbooks/mikrotik-reset-config.yml) | WIP: Factory resets device configuration |
-| [playblooks/mikrotik-reboot.yml](playbooks/mikrotik-reboot.yml) | Safely reboots Mikrotik devices |
-| [playblooks/mikrotik-check-versions.yml](playbooks/mikrotik-check-versions.yml) | Retrieves and displays current RouterOS versions |
+| [playbooks/mikrotik-upgrade.yml](playbooks/mikrotik-upgrade.yml) | WIP: Upgrades RouterOS to specified version |
+| [playbooks/mikrotik-reset-config.yml](playbooks/mikrotik-reset-config.yml) | WIP: Factory resets device configuration |
+| [playbooks/mikrotik-reboot.yml](playbooks/mikrotik-reboot.yml) | Safely reboots Mikrotik devices |
+| [playbooks/mikrotik-check-versions.yml](playbooks/mikrotik-check-versions.yml) | Retrieves and displays current RouterOS versions |
 |Facts gathering||
-| [playblooks/mikrotik-resources-usage.yml](playbooks/mikrotik-resources-usage.yml) | |
+| [playbooks/mikrotik-resources-usage.yml](playbooks/mikrotik-resources-usage.yml) | |
 |More to come for routers and firewalls|...|
 
 
@@ -171,9 +171,9 @@ If you want to test the playbooks using the labs we have prepared at: [container
 The labs provided by this repo are:
 
 - [three Mikrotik nodes](containerlabs/simple.clab.yml) interconnected and two Linux clients attached
-- [single Mikrotik node](containerlabs/simple.clab.yml) a basic singe node lab to test your playbooks without any lab complexities
+- [single Mikrotik node](containerlabs/simple.clab.yml) a basic single node lab to test your playbooks without any lab complexities
 
-You can spin up both labs simultaniously if you like to play around with both.
+You can spin up both labs simultaneously if you like to play around with both.
 
 #### Start containerlab from the terminal
 ```bash
@@ -185,14 +185,14 @@ clab deploy -t containerlabs/s3n.clab.yml
 Navigate on the left to containerlab. Right click on the lab you want to start and choose `Deploy`
 
 
-### More inforamtion on containerlab and devpod, codespaces and the VS-code extension
+### More information on containerlab and devpod, codespaces and the VS-code extension
 
 Great videos by [Roman Dodin](https://github.com/hellt):
 
 
 - [VS Code extension for Containerlab](https://www.youtube.com/watch?v=NIw1PbfCyQ4)
 - [Containerlab and DevPod](https://www.youtube.com/watch?v=ceDrFx2K3jE)
-- [Running Containlerab on macOS and Windows with Devcontainers](https://www.youtube.com/watch?v=Xue1pLiO0qQ)
+- [Running Containerlab on macOS and Windows with Devcontainers](https://www.youtube.com/watch?v=Xue1pLiO0qQ)
 
 ## Configuration when running against other Mikrotik devices
 
@@ -208,7 +208,7 @@ Check this file to identify the IPs for all switches and how to connect to them.
 
 *Connecting Requirements:*  
 
-```conole
+```console
 [Ansible Playbook] --> [Mikrotik RouterOS API]
 [Ansible Playbook] --> [Mikrotik RouterOS SSL-API]
 [Ansible Playbook] --> [Mikrotik RouterOS SSH] # some playbooks directly connect via ssh/scp
@@ -327,7 +327,7 @@ Make sure the members of a bond don't belong to the bridge. This requires the ri
 
 ### Details about trunk ports
 
-Every trunk port should have `bpdu_guard: no` in `interface_brige_ports.yml`
+Every trunk port should have `bpdu_guard: no` in `interface_bridge_ports.yml`
 
 ### common error
 
