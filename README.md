@@ -36,28 +36,26 @@ For some first impressions of using this repo with [Mikrotik CHR](https://help.m
 
 ---
 
+## Table of Contents
+- [Setup and Deployment](#setup-and-deployment)
+- [Running the playbooks](#running-the-playbooks)
+- [Configuration when running against other Mikrotik devices](#configuration-when-running-against-other-mikrotik-devices)
+- [Running and testing the ansible playbooks](#running-and-testing-the-ansible-playbooks)
+- [Login to Lab devices](#login-to-lab-devices)
+- [Ansible Debugging](#ansible-debugging)
+- [Caveats](#caveats)
+- [Contributing](#contributing)
+- [License](#license)
+- [About](#about)
+- [Additional Resources](#additional-resources)
+
+---
+
 ## Setup and Deployment
 
 ### Ansible
 
 The provided playbooks depend on specific Python versions and required packages (see [requirements.txt](requirements.txt)), as well as necessary Ansible collections (see [requirements.yml](requirements.yml)). If you already have a working Ansible setup, feel free to test them—they might just work. Otherwise, review the requirements.
-
-We provide some examples on how to use these playbooks to fully configure and backup Mikrotik devices. The following sections describe the files that provide this magic.
-
-#### Group Vars 
-- [inventory/mikrotik](inventory/mikrotik)
-
-- [inventory/group_vars/all.yml](inventory/group_vars/all.yml)
-
-- [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/)
-- [inventory/group_vars/mikrotik_chr_12_ports_containerlab/](inventory/group_vars/mikrotik_chr_12_ports_containerlab/)
-
-
-Special folders:
-- [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/)
-- []()
-- []()
-- []()
 
 #### Local installation
 
@@ -85,15 +83,85 @@ For both options below please: **be patient while the environment is spinning up
 
   **NOTE for Apple Silicon users** (ARM based Macs): The containerlab with Mikrotik docker image that is provided for the lab is build with [vrnetlab](https://github.com/vrnetlab/vrnetlab/tree/master/routeros) and does not yet support ARM based Macs. You should use github codespaces instead for now.
 
+### Ansible environment
 
-### Running the playbooks with a lab
+We provide some examples on how to use these playbooks to fully configure and backup Mikrotik devices. The following sections describe the files that provide this magic.
+
+
+
+#### Ansible Group Variables Structure
+
+The group variables directory contains several important configuration files:
+
+| File/Directory | Description |
+|----------------|-------------|
+|Adjust to your setup||
+| [inventory/mikrotik/group_vars/mikrotik/](inventory/mikrotik/group_vars/mikrotik/) | Base configuration for all Mikrotik devices |
+| [inventory/group_vars/all.yml](inventory/group_vars/all.yml) | Global variables applied to all devices |
+|No need to edit||
+| [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/) | RouterOS-specific settings for all Mikrotik devices |
+| [inventory/group_vars/mikrotik_chr_12_ports_containerlab/](inventory/group_vars/mikrotik_chr_12_ports_containerlab/) | Settings specific to virtualized RouterOS instances with 12 ports |
+|Only edit if you know what you are doing||
+| [inventory/group_vars/mikrotik_switches/](inventory/group_vars/mikrotik_switches/) | Configuration files specific to Mikrotik switching hardware |
+| [inventory/group_vars/mikrotik_routers/](inventory/group_vars/mikrotik_routers/) | WIP to come: Configuration files specific to Mikrotik routing hardware |
+
+#### Ansible Host Variables Structure
+
+Ansible uses a variable precedence system where more specific variables override more general ones. The host variables (`host_vars`) directory contains configurations that are specific to individual devices and will override any matching variables defined in group variables (`group_vars`).
+
+This creates a powerful inheritance model:
+
+1. **Global settings** defined in `group_vars/all.yml` apply to all devices
+2. **Group-specific settings** like those in `group_vars/mikrotik/` apply to all devices in that group
+3. **Host-specific settings** in each device's folder under `host_vars/` have the highest priority and override group settings
+
+For example, if `group_vars/mikrotik/interface.yml` defines a standard interface configuration and `host_vars/clab-s3n-sw-dist1/interface.yml` defines specific settings for that device, the host-specific settings will take precedence for that particular device.
+
+This allows you to:
+- Define common configurations once at the group level
+- Override only what's necessary for specific devices
+- Maintain a clean, DRY (Don't Repeat Yourself) configuration structure
+
+When troubleshooting, always check both host_vars and group_vars to understand the final applied configuration. Have a look at the [Ansible degugging section](#ansible-debugging)
+
+| File/Directory | Description |
+|----------------|-------------|
+| [inventory/host_vars/clab-s3n-sw-dist1/](inventory/host_vars/clab-s3n-sw-dist1/) | Example configuration for a distribution switch |
+| [inventory/host_vars/clab-s3n-sw-acc1/](inventory/host_vars/clab-s3n-sw-acc1/) | Example configuration for an access switch |
+| [inventory/host_vars/clab-s3n-sw-acc2/](inventory/host_vars/clab-s3n-sw-acc2/) | Example configuration for a second access switch |
+| [inventory/host_vars/clab-simple-n1/](inventory/host_vars/clab-simple-n1/) | Example configuration for a simple node setup |
+
+#### Playbooks
+
+
+Here's a reference to all available playbooks:
+
+| Playbook | Description |
+|----------|-------------|
+| [playblooks/mikrotik-backup-config.yml](playbooks/mikrotik-backup-config.yml) | Backs up RouterOS configuration files (.rsc files)|
+| [playblooks/mikrotik-backup-system.yml](playbooks/mikrotik-backup-system.yml) | Backs up RouterOS system (.backup files)|
+| [playblooks/mikrotik-configure.yml](playbooks/mikrotik-configure.yml) | Deploys full configuration to Mikrotik devices |
+|SSL-API||
+| [playblooks/mikrotik-generate-ssl-certs.yml](playbooks/mikrotik-generate-ssl-certs.yml) | Generates SSL certificates for API access |
+| [playblooks/mikrotik-configure-ssl-api.yml](playbooks/mikrotik-configure-ssl-api.yml) | Configures SSL API access on Mikrotik devices |
+|Operations||
+| [playblooks/mikrotik-upgrade.yml](playbooks/mikrotik-upgrade.yml) | WIP: Upgrades RouterOS to specified version |
+| [playblooks/mikrotik-reset-config.yml](playbooks/mikrotik-reset-config.yml) | WIP: Factory resets device configuration |
+| [playblooks/mikrotik-reboot.yml](playbooks/mikrotik-reboot.yml) | Safely reboots Mikrotik devices |
+| [playblooks/mikrotik-check-versions.yml](playbooks/mikrotik-check-versions.yml) | Retrieves and displays current RouterOS versions |
+|Facts gathering||
+| [playblooks/mikrotik-resources-usage.yml](playbooks/mikrotik-resources-usage.yml) | |
+|More to come for routers and firewalls|...|
+
+
+### Setting up a lab for testing
 
 If you want to test the playbooks using the labs we have prepared at: [containerlabs](containerlabs/) you can again have two options:
 
 - install containerlab on your machine. For this please follow: [containerlab docs](https://containerlab.dev/quickstart/) this guide
 - use one of the provided docker envs described in [Dockerized options](#dockerized-options). These contain a full installation of containerlab as well as the vs-code containerlab extension
 
-## Running and testing the playbooks
+## Running the playbooks
 
 ### Quick start options with containerlab
 
@@ -229,18 +297,17 @@ ssh user@clab-s3n-linux1
 
 ---
 
-## Debugging
+## Ansible Debugging
 
-### Check the ansible groups for a device in the inventory
-
+- Check all vars for resolved for a single host
 ```bash
-# all groups
-ansible -m debug -a var="hostvars[inventory_hostname]['group_names']" sw-mkt-cluster-05
+ansible -m debug -a "var=vars" clab-simple-n1
 ```
 
+- Check the ansible groups for a device in the inventory
+
 ```bash
-# all vars
-ansible -m debug -a "var=vars" clab-simple-n1
+ansible -m debug -a var="hostvars[inventory_hostname]['group_names']" clab-simple-n1
 ```
 
 ---
