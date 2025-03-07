@@ -109,6 +109,25 @@ Check this file to identify the IPs for all switches and how to connect to them.
 [Ansible Playbook] --> [Mikrotik RouterOS SSH] # some playbooks directly connect via ssh/scp
 ```
 
+### Naming convention for inventory files and variables
+
+Every device configuration option must be defined in the under [inventory/group_vars](inventory/group_vars) or [inventory/host_vars](inventory/host_vars).
+
+#### Naming convention for inventory file names
+
+It's recommended to split the configuration variables in multiple files. The file name convention is to align the file name in the inventory with the api/cli endpoint to which the config is applied e.g.
+
+file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml](inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml) defines the configuration for api/cli endpoint `/interface/bridge`
+
+#### Naming convention for inventory var names
+
+Every variable must start with prefix `routeros_` and then the api/cli endpoint where the config applies e.g. `routeros_interface_bridge`
+
+In file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml] you can find the variable named `routeros_interface_bridge`
+
+  * variable starting with prefix `routeros_` indicates it's a variable defining a routeros configuration
+  * variable ending with suffix `_interface_bridge` indicates it's a config option which applies to api/cli endpoint `/interface/bridge`
+
 ---
 
 ## Running and testing the ansible playbooks
