@@ -12,7 +12,7 @@
 [w212]: https://github.com/user-attachments/assets/7bd9ab55-dee2-436d-9a36-6cef335921e1
 [w90]: https://github.com/user-attachments/assets/f955fb52-9ae6-4b4d-9b06-63b8d44769d4
 
-## Automating MikroTik Device Configuration with Ansible
+## Automating MikroTik Device Management with Ansible
 
 ansible-mikrotik enables network engineers to automate the configuration and management of [MikroTik](https://mikrotik.com) devices. By leveraging Ansible's idempotent execution model, the provided playbooks simplify network operations significantly, minimize manual errors, and streamline deployment in dynamic network environments. 
 
