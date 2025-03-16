@@ -20,6 +20,8 @@
 
   roles:
     - mikrotik-common
+    - mikrotik-interface-list
+    - mikrotik-management-tools
 
   tasks:
 
@@ -98,63 +100,6 @@
         - routeros_interface_bridge_port is defined
         - routeros_interface_bridge_port | length > 0
 
-    # XXX this needs improvement especially checking if vars exist
-    - name: IP services
-      tags: ip_service
-      community.routeros.api_modify:
-        path: ip service
-        data: "{{ routeros_ip_service }}"
-        handle_absent_entries: "ignore"
-
-    - name: Interface lists
-      tags: interface-lists
-      block:
-        - name: Interface list
-          community.routeros.api_modify:
-            path: interface list
-            data: "{{ routeros_interface_list }}"
-
-        - name: Interface list member
-          community.routeros.api_modify:
-            path: interface list member
-            data: "{{ routeros_interface_list_member }}"
-          when:
-            - routeros_interface_list_member is defined
-            - routeros_interface_list_member | length > 0
-
-    - name: Mac-Server
-      tags: mac_server
-      block:
-        - name: Mac-server
-          community.routeros.api_modify:
-            path: tool mac-server
-            data: "{{ routeros_tool_mac_server }}"
-
-        - name: Mac-server winbox
-          community.routeros.api_modify:
-            path: tool mac-server mac-winbox
-            data: "{{ routeros_tool_mac_server_mac_winbox }}"
-
-        - name: Mac-server mac ping
-          community.routeros.api_modify:
-            path: tool mac-server ping
-            data: "{{ routeros_tool_mac_server_ping }}"
-
-
-    - name: Neighbor discovery
-      tags: neighbor_discovery
-      community.routeros.api_modify:
-        path: ip neighbor discovery-settings
-        data: "{{ routeros_ip_neighbor_discovery_settings }}"
-
-
-    # XXX if host-key-size is changed we need to run /ip ssh regenerate-host-key
-    - name: SSH-Server settings
-      tags: ssh
-      community.routeros.api_modify:
-        path: ip ssh
-        data: "{{ routeros_ip_ssh }}"
-
     # from:     https://help.mikrotik.com/docs/display/ROS/First+Time+Configuration
     # Following services are disabled by default, nevertheless, it is better to make sure that none of then were enabled accidentally
     - name: Proxy settings
@@ -181,25 +126,6 @@
       community.routeros.api_modify:
         path: ip cloud
         data: "{{ routeros_ip_cloud }}"
-
-    - name: SNMP settings
-      tags: snmp
-      block:
-        - name: Enable the SNMP server
-          community.routeros.api_modify:
-            path: snmp
-            data: "{{ routeros_snmp }}"
-          when:
-            - routeros_snmp is defined
-            - routeros_snmp | length > 0
-
-        - name: Configure the SNMP community
-          community.routeros.api_modify:
-            path: snmp community
-            data: "{{ routeros_snmp_community }}"
-          when:
-            - routeros_snmp_community is defined
-            - routeros_snmp_community | length > 0
 
     - name: IPv6 settings
       tags: ipv6

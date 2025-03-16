@@ -1,0 +1,64 @@
+---
+# FIXME This needs an improvement, especially checking if vars exist.
+- name: IP services
+  tags: ip_service
+  community.routeros.api_modify:
+    path: ip service
+    data: "{{ routeros_ip_service }}"
+    handle_absent_entries: ignore
+
+
+- name: MAC server
+  tags: mac_server
+  block:
+
+    - name: MAC server
+      community.routeros.api_modify:
+        path: tool mac-server
+        data: "{{ routeros_tool_mac_server }}"
+
+    - name: MAC sever WinBox
+      community.routeros.api_modify:
+        path: tool mac-server mac-winbox
+        data: "{{ routeros_tool_mac_server_mac_winbox }}"
+
+    - name: MAC server ping
+      community.routeros.api_modify:
+        path: tool mac-server ping
+        data: "{{ routeros_tool_mac_server_ping }}"
+
+
+- name: Neighbor discovery
+  tags: neighbor_discovery
+  community.routeros.api_modify:
+    path: ip neighbor discovery-settings
+    data: "{{ routeros_ip_neighbor_discovery_settings }}"
+
+
+# FIXME If host-key-size is changed, we need to run /ip ssh regenerate-host-key.
+- name: SSH server settings
+  tags: ssh
+  community.routeros.api_modify:
+    path: ip ssh
+    data: "{{ routeros_ip_ssh }}"
+
+
+- name: SNMP settings
+  tags: snmp
+  block:
+
+    - name: Enable the SNMP server
+      community.routeros.api_modify:
+        path: snmp
+        data: "{{ routeros_snmp }}"
+      when:
+        - routeros_snmp is defined
+        - routeros_snmp | length > 0
+
+    - name: Configure the SNMP community
+      community.routeros.api_modify:
+        path: snmp community
+        data: "{{ routeros_snmp_community }}"
+      when:
+        - routeros_snmp_community is defined
+        - routeros_snmp_community | length > 0

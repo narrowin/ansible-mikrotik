@@ -1,0 +1,17 @@
+---
+- name: Interface lists
+  tags: interface_list
+  block:
+
+    - name: Interface list
+      community.routeros.api_modify:
+        path: interface list
+        data: "{{ routeros_interface_list }}"
+
+    - name: Interface list member
+      community.routeros.api_modify:
+        path: interface list member
+        data: "{{ routeros_interface_list_member }}"
+      when:
+        - routeros_interface_list_member is defined
+        - routeros_interface_list_member | length > 0
