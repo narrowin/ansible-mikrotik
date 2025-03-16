@@ -203,6 +203,11 @@ In file [inventory/host_vars/clab-s3n-sw-dist1/interface_bridge.yml] you can fin
   * variable starting with prefix `routeros_` indicates it's a variable defining a routeros configuration
   * variable ending with suffix `_interface_bridge` indicates it's a config option which applies to api/cli endpoint `/interface/bridge`
 
+
+## For production usage
+
+In production make sure you use ssl-api (disable cleartext), ansible-vault and if possible ssh key-based auth. 
+
 ### How to enable API with SSL in mikrotik devices
 
 First generate the required SSL certs executing `ansible-playbook playbooks/mikrotik-generate-ssl-certs.yml`
@@ -320,7 +325,7 @@ ssh user@clab-s3n-linux1
 
 ## Ansible Debugging
 
-- Check all vars for resolved for a single host
+- Check all vars for resolved for a host
 ```bash
 ansible -m debug -a "var=vars" clab-s3n-sw-acct1
 ```
