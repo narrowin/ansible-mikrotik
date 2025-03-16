@@ -151,7 +151,6 @@ When troubleshooting, always check both host_vars and group_vars to understand t
 | [inventory/host_vars/clab-s3n-sw-dist1/](inventory/host_vars/clab-s3n-sw-dist1/) | Example configuration for a distribution switch |
 | [inventory/host_vars/clab-s3n-sw-acc1/](inventory/host_vars/clab-s3n-sw-acc1/) | Example configuration for an access switch |
 | [inventory/host_vars/clab-s3n-sw-acc2/](inventory/host_vars/clab-s3n-sw-acc2/) | Example configuration for a second access switch |
-| [inventory/host_vars/clab-simple-n1/](inventory/host_vars/clab-simple-n1/) | Example configuration for a simple node setup |
 
 #### Playbooks
 
@@ -283,8 +282,7 @@ If you want to test the playbooks using the labs we have prepared at: [container
 
 The labs provided by this repo are:
 
-- [three Mikrotik nodes](containerlabs/simple.clab.yml) interconnected and two Linux clients attached
-- [single Mikrotik node](containerlabs/simple.clab.yml) a basic single node lab to test your playbooks without any lab complexities
+- [three MikroTik nodes](containerlabs/s3n.clab.yml) interconnected and two Linux clients attached
 
 ### Lab Credentials
 
@@ -324,13 +322,13 @@ ssh user@clab-s3n-linux1
 
 - Check all vars for resolved for a single host
 ```bash
-ansible -m debug -a "var=vars" clab-simple-n1
+ansible -m debug -a "var=vars" clab-s3n-sw-acct1
 ```
 
 - Check the ansible groups for a device in the inventory
 
 ```bash
-ansible -m debug -a var="hostvars[inventory_hostname]['group_names']" clab-simple-n1
+ansible -m debug -a var="hostvars[inventory_hostname]['group_names']" clab-s3n-sw-acct1
 ```
 
 ---

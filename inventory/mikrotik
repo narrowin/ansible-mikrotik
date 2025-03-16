@@ -4,7 +4,6 @@
 
 [mikrotik_switches]
 # CHR containerlab examples
-clab-simple-n1 ansible_host=10.10.0.11
 clab-s3n-sw-acc1 ansible_host=10.10.1.11
 clab-s3n-sw-acc2 ansible_host=10.10.1.12
 clab-s3n-sw-dist1 ansible_host=10.10.1.13
@@ -16,7 +15,6 @@ clab-s3n-sw-dist1 ansible_host=10.10.1.13
 # sw-mkt-cluster-01 ansible_host=10.10.0.21
 
 [mikrotik_chr_12ports_containerlab]
-clab-simple-n1
 clab-s3n-sw-dist1
 
 [mikrotik_chr_24ports_containerlab]

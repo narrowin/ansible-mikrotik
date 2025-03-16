@@ -11,14 +11,17 @@ topology:
       kind: mikrotik_ros
       image: ghcr.io/narrowin/vrnetlab_mikrotik_routeros:7.18
       mgmt-ipv4: 10.10.1.11
+      startup-config: clab-s3n-startup-configs/sw-acct1.rsc
     sw-acc2:
       kind: mikrotik_ros
       image: ghcr.io/narrowin/vrnetlab_mikrotik_routeros:7.18
       mgmt-ipv4: 10.10.1.12
+      startup-config: clab-s3n-startup-configs/sw-acct2.rsc
     sw-dist1:
       kind: mikrotik_ros
       image: ghcr.io/narrowin/vrnetlab_mikrotik_routeros:7.18
       mgmt-ipv4: 10.10.1.13
+      startup-config: clab-s3n-startup-configs/sw-dist1.rsc
     linux1:
       kind: linux
       image: ghcr.io/srl-labs/network-multitool

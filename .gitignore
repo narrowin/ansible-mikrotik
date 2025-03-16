@@ -3,8 +3,6 @@ __pycache__
 *$py.class
 .molecule
 .cache
-roles/
-collections/
 vault.pass
 .vault.pass
 *.rc
@@ -12,8 +10,8 @@ vault.pass
 backups
 .vscode
 playbooks/debug*
+collections
 venv
 secrets
 containerlabs/*.bak
 containerlabs/clab-s3n
-containerlabs/clab-simple
