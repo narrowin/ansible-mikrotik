@@ -18,6 +18,9 @@
       handle_absent_entries: "remove"
       handle_entries_content: "remove_as_much_as_possible"
 
+  roles:
+    - mikrotik-common
+
   tasks:
 
     # - name: Create backup and cronjob to restore it in case we lose access
@@ -34,57 +37,6 @@
     #   when: local_routeros_rollback
     #   tags: rollback
 
-    - name: Hostname
-      tags: hostname
-      community.routeros.api_modify:
-        path: system identity
-        data: "{{ routeros_system_identity }}"
-      when:
-        - routeros_system_identity is defined
-
-    - name: DNS settings
-      community.routeros.api_modify:
-        path: ip dns
-        data: "{{ routeros_ip_dns }}"
-      tags: dns
-
-    - name: System time
-      tags: time
-      block:
-        - name: System clock
-          community.routeros.api_modify:
-            path: system clock
-            data: "{{ routeros_system_clock }}"
-          when:
-            - routeros_system_clock is defined
-            - routeros_system_clock | length > 0
-
-        - name: NTP server
-          community.routeros.api_modify:
-            path: system ntp client
-            data: "{{ routeros_system_ntp_client }}"
-          when:
-            - routeros_system_ntp_client is defined
-            - routeros_system_ntp_client | length > 0
-
-    - name: Configure syslog
-      tags: syslog
-      block:
-        - name: Remote syslog server
-          community.routeros.api_modify:
-            path: system logging action
-            data: "{{ routeros_system_logging_action }}"
-          when:
-            - routeros_system_logging_action is defined
-            - routeros_system_logging_action | length > 0
-
-        - name: Define which severity to send to remote syslog
-          community.routeros.api_modify:
-            path: system logging
-            data: "{{ routeros_system_logging }}"
-          when:
-            - routeros_system_logging is defined
-            - routeros_system_logging | length > 0
 
     - name: Ethernet ports
       tags: ethernet_ports
