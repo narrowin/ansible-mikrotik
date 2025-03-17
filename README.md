@@ -295,7 +295,7 @@ The labs provided by this repo are:
 Mikrotik CHRs: 
   User: admin Password: admin
 Linux machines: 
-  User: user Password: multi00l
+  User: user Password: multit00l
 ```
 
 #### Start containerlab from the terminal
