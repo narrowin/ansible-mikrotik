@@ -108,7 +108,7 @@ The group variables directory contains several important configuration files:
 | File/Directory | Description |
 |----------------|-------------|
 |Adjust to your setup||
-| [inventory/mikrotik/group_vars/mikrotik/](inventory/mikrotik/group_vars/mikrotik/) | Base configuration for all MikroTik devices |
+| [inventory/group_vars/mikrotik/](inventory/mikrotik/group_vars/mikrotik/) | Base configuration for all MikroTik devices |
 | [inventory/group_vars/all.yml](inventory/group_vars/all.yml) | Global variables applied to all devices |
 |No need to edit||
 | [inventory/group_vars/mikrotik/](inventory/group_vars/mikrotik/) | RouterOS-specific settings for all MikroTik devices |
